@@ -1,0 +1,288 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A5C0D6A2C4D1E1E00112233 /* ChoreShareApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D612C4D1E1E00112233 /* ChoreShareApp.swift */; };
+		0A5C0D6B2C4D1E1E00112233 /* Chore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D622C4D1E1E00112233 /* Chore.swift */; };
+		0A5C0D6C2C4D1E1E00112233 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D632C4D1E1E00112233 /* ContentView.swift */; };
+		0A5C0D6D2C4D1E1E00112233 /* ChoreRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D642C4D1E1E00112233 /* ChoreRow.swift */; };
+		0A5C0D6E2C4D1E1E00112233 /* ChoreDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D652C4D1E1E00112233 /* ChoreDetailView.swift */; };
+		0A5C0D6F2C4D1E1E00112233 /* NewChoreView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D662C4D1E1E00112233 /* NewChoreView.swift */; };
+		0A5C0D702C4D1E1E00112233 /* PeopleView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D672C4D1E1E00112233 /* PeopleView.swift */; };
+		0A5C0D712C4D1E1E00112233 /* Color+Hex.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A5C0D682C4D1E1E00112233 /* Color+Hex.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0A5C0D552C4D1E1E00112233 /* ChoreShare.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; path = ChoreShare.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0A5C0D612C4D1E1E00112233 /* ChoreShareApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreShareApp.swift; sourceTree = "<group>"; };
+		0A5C0D622C4D1E1E00112233 /* Chore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Chore.swift; sourceTree = "<group>"; };
+		0A5C0D632C4D1E1E00112233 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		0A5C0D642C4D1E1E00112233 /* ChoreRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreRow.swift; sourceTree = "<group>"; };
+		0A5C0D652C4D1E1E00112233 /* ChoreDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChoreDetailView.swift; sourceTree = "<group>"; };
+		0A5C0D662C4D1E1E00112233 /* NewChoreView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewChoreView.swift; sourceTree = "<group>"; };
+		0A5C0D672C4D1E1E00112233 /* PeopleView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleView.swift; sourceTree = "<group>"; };
+		0A5C0D682C4D1E1E00112233 /* Color+Hex.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Color+Hex.swift; sourceTree = "<group>"; };
+		0A5C0D692C4D1E1E00112233 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Resources/Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXGroup section */
+		0A5C0D4D2C4D1E1E00112233 = {
+			isa = PBXGroup;
+			children = (
+				0A5C0D612C4D1E1E00112233 /* ChoreShareApp.swift */,
+				0A5C0D742C4D1E1E00112233 /* Models */,
+				0A5C0D732C4D1E1E00112233 /* Views */,
+				0A5C0D692C4D1E1E00112233 /* Info.plist */,
+			);
+			path = ChoreShare;
+			sourceTree = "<group>";
+		};
+		0A5C0D4E2C4D1E1E00112233 = {
+			isa = PBXGroup;
+			children = (
+				0A5C0D4D2C4D1E1E00112233,
+				0A5C0D552C4D1E1E00112233 /* ChoreShare.app */,
+			);
+			sourceTree = "<group>";
+		};
+		0A5C0D732C4D1E1E00112233 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				0A5C0D632C4D1E1E00112233 /* ContentView.swift */,
+				0A5C0D642C4D1E1E00112233 /* ChoreRow.swift */,
+				0A5C0D652C4D1E1E00112233 /* ChoreDetailView.swift */,
+				0A5C0D662C4D1E1E00112233 /* NewChoreView.swift */,
+				0A5C0D672C4D1E1E00112233 /* PeopleView.swift */,
+				0A5C0D752C4D1E1E00112233 /* Components */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		0A5C0D742C4D1E1E00112233 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				0A5C0D622C4D1E1E00112233 /* Chore.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		0A5C0D752C4D1E1E00112233 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				0A5C0D682C4D1E1E00112233 /* Color+Hex.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0A5C0D542C4D1E1E00112233 /* ChoreShare */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0A5C0D762C4D1E1E00112233 /* Build configuration list for PBXNativeTarget "ChoreShare" */;
+			buildPhases = (
+				0A5C0D512C4D1E1E00112233 /* Sources */,
+				0A5C0D522C4D1E1E00112233 /* Frameworks */,
+				0A5C0D532C4D1E1E00112233 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ChoreShare;
+			productName = ChoreShare;
+			productReference = 0A5C0D552C4D1E1E00112233 /* ChoreShare.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0A5C0D4F2C4D1E1E00112233 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1500;
+				LastUpgradeCheck = 1500;
+				TargetAttributes = {
+					0A5C0D542C4D1E1E00112233 = {
+						CreatedOnToolsVersion = 15.0;
+					};
+				};
+			};
+			buildConfigurationList = 0A5C0D5A2C4D1E1E00112233 /* Build configuration list for PBXProject "ChoreShare" */;
+			compatibilityVersion = "Xcode 15.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0A5C0D4E2C4D1E1E00112233;
+			productRefGroup = 0A5C0D4E2C4D1E1E00112233;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0A5C0D542C4D1E1E00112233 /* ChoreShare */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0A5C0D532C4D1E1E00112233 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0A5C0D512C4D1E1E00112233 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0A5C0D6A2C4D1E1E00112233 /* ChoreShareApp.swift in Sources */,
+				0A5C0D6B2C4D1E1E00112233 /* Chore.swift in Sources */,
+				0A5C0D6C2C4D1E1E00112233 /* ContentView.swift in Sources */,
+				0A5C0D6D2C4D1E1E00112233 /* ChoreRow.swift in Sources */,
+				0A5C0D6E2C4D1E1E00112233 /* ChoreDetailView.swift in Sources */,
+				0A5C0D6F2C4D1E1E00112233 /* NewChoreView.swift in Sources */,
+				0A5C0D702C4D1E1E00112233 /* PeopleView.swift in Sources */,
+				0A5C0D712C4D1E1E00112233 /* Color+Hex.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0A5C0D522C4D1E1E00112233 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		0A5C0D5B2C4D1E1E00112233 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.choreshare;
+				PRODUCT_NAME = "ChoreShare";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		0A5C0D5C2C4D1E1E00112233 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.choreshare;
+				PRODUCT_NAME = "ChoreShare";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		0A5C0D5E2C4D1E1E00112233 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.choreshare;
+				PRODUCT_NAME = "ChoreShare";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		0A5C0D5F2C4D1E1E00112233 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				INFOPLIST_FILE = "Resources/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.example.choreshare;
+				PRODUCT_NAME = "ChoreShare";
+				SDKROOT = iphoneos;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0A5C0D5A2C4D1E1E00112233 /* Build configuration list for PBXProject "ChoreShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A5C0D5B2C4D1E1E00112233 /* Debug */,
+				0A5C0D5C2C4D1E1E00112233 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		0A5C0D762C4D1E1E00112233 /* Build configuration list for PBXNativeTarget "ChoreShare" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0A5C0D5E2C4D1E1E00112233 /* Debug */,
+				0A5C0D5F2C4D1E1E00112233 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0A5C0D4F2C4D1E1E00112233 /* Project object */;
+}
