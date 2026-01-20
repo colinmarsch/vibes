@@ -38,7 +38,6 @@
 				0A5C0D732C4D1E1E00112233 /* Views */,
 				0A5C0D692C4D1E1E00112233 /* Info.plist */,
 			);
-			path = ChoreShare;
 			sourceTree = "<group>";
 		};
 		0A5C0D4E2C4D1E1E00112233 = {
