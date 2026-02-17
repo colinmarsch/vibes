@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seattle Run Clubs</title>
+    <meta name="description" content="A curated, design-forward directory of Seattle-area running clubs and weekly schedules." />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Seattle, WA</p>
+        <h1>Run Clubs & Weekly Schedules</h1>
+        <p class="subtitle">
+          A curated list of Seattle-area run communities and recurring sessions. Times can change seasonally, so use the source link before heading out.
+        </p>
+      </header>
+
+      <section class="controls" aria-label="Filters">
+        <label>
+          Day
+          <select id="day-filter">
+            <option value="all">All days</option>
+          </select>
+        </label>
+        <label>
+          Focus
+          <select id="focus-filter">
+            <option value="all">All focuses</option>
+          </select>
+        </label>
+        <label class="search">
+          Search
+          <input id="search-input" type="search" placeholder="Club, neighborhood, meetup..." />
+        </label>
+      </section>
+
+      <section class="stats" id="stats"></section>
+      <section class="cards" id="cards"></section>
+
+      <footer class="footer">
+        Last updated: February 2026 · Built for GitHub Pages.
+      </footer>
+    </main>
+
+    <script src="app.js"></script>
+  </body>
+</html>
