@@ -2,10 +2,6 @@ name: Deploy Seattle Run Clubs Site
 
 on:
   push:
-    branches: [main]
-    paths:
-      - 'seattle-run-clubs/**'
-      - '.github/workflows/deploy-seattle-run-clubs.yml'
   workflow_dispatch:
 
 permissions:

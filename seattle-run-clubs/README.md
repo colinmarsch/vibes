@@ -11,7 +11,7 @@ python -m http.server 4173
 
 ## GitHub Pages deployment
 
-This repo includes `.github/workflows/deploy-seattle-run-clubs.yml` which deploys this directory to GitHub Pages on push to `main`.
+This repo includes `.github/workflows/deploy-seattle-run-clubs.yml` which deploys this directory to GitHub Pages on push (and can also be run manually).
 
 In repository settings, ensure:
 - **Pages** source is set to **GitHub Actions**.
