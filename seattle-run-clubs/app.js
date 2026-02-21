@@ -83,12 +83,50 @@ const clubs = [
     source: "https://westseattlerunner.com/pages/events"
   },
   {
-    name: "Carkeek Parkrun",
-    neighborhood: "Northwest Seattle",
+    name: "Lake Sammamish Run Club",
+    neighborhood: "Redmond / Eastside",
+    focus: "Eastside social + training",
+    days: ["Monday", "Wednesday", "Thursday", "Friday", "Sunday"],
+    schedule: [
+      "Monday · 6:05 PM intro, run starts around 6:07–6:10 PM (Redmond Downtown Park)",
+      "Wednesday · 6:00 AM (Redmond Central Connector)",
+      "Thursday · 6:05 PM intro, run starts around 6:07–6:10 PM (Kirkland/Bridle Trails seasonal)",
+      "Friday · 7:00 AM rotating run (Redmond/Kirkland area)",
+      "Sunday · 8:30 AM coffee/field-trip run (varies by week)"
+    ],
+    source: "https://www.lakesammamishrunclub.org/WeeklyRuns"
+  },
+  {
+    name: "Issaquah Alps Trail Running Club",
+    neighborhood: "Issaquah Alps",
+    focus: "Trail running community",
+    days: ["Tuesday"],
+    schedule: ["Tuesday · 6:00 PM trail run events (see current Facebook events listing)"],
+    source: "https://www.facebook.com/groups/1199932723806219/events/"
+  },
+  {
+    name: "Renton parkrun",
+    neighborhood: "Renton (Cedar River Trail)",
     focus: "Free weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 9:00 AM free timed 5K"],
-    source: "https://www.parkrun.us/carkeek/"
+    source: "https://www.parkrun.us/renton/"
+  },
+  {
+    name: "Des Moines Creek parkrun",
+    neighborhood: "Des Moines",
+    focus: "Free weekly 5K",
+    days: ["Saturday"],
+    schedule: ["Saturday · 9:00 AM free timed 5K"],
+    source: "https://www.parkrun.us/desmoinescreek/"
+  },
+  {
+    name: "Perrigo parkrun",
+    neighborhood: "Redmond (Perrigo Community Park)",
+    focus: "Free weekly 5K",
+    days: ["Saturday"],
+    schedule: ["Saturday · 8:00 AM (May–Sep) / 9:00 AM (Oct–Apr) free timed 5K"],
+    source: "https://www.parkrun.us/perrigo/"
   }
 ];
 
