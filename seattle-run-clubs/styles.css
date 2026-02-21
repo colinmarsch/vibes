@@ -1,12 +1,12 @@
 :root {
-  --bg: #060b1f;
-  --bg-soft: #0f1734;
-  --card: rgba(16, 25, 56, 0.8);
-  --text: #e9eeff;
-  --muted: #aeb8dc;
-  --accent: #7cf0c5;
-  --accent-2: #7aa9ff;
-  --border: rgba(187, 204, 255, 0.2);
+  --bg: #07150f;
+  --bg-soft: #10261d;
+  --card: rgba(15, 44, 33, 0.84);
+  --text: #e7f2ea;
+  --muted: #a8beb0;
+  --accent: #9ddf8f;
+  --accent-2: #84c8b2;
+  --border: rgba(147, 190, 160, 0.32);
 }
 
 * { box-sizing: border-box; }
@@ -15,8 +15,9 @@ body {
   margin: 0;
   font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   color: var(--text);
-  background: radial-gradient(1000px 500px at 15% -10%, #21336f 0%, transparent 60%),
-              radial-gradient(900px 400px at 100% 10%, #0a5f61 0%, transparent 55%),
+  background: radial-gradient(1100px 540px at 10% -10%, #1d4b36 0%, transparent 60%),
+              radial-gradient(900px 440px at 92% 8%, #2f6b52 0%, transparent 58%),
+              radial-gradient(800px 380px at 50% 100%, #163729 0%, transparent 62%),
               var(--bg);
   min-height: 100vh;
 }
@@ -25,7 +26,13 @@ body {
   position: fixed;
   inset: 0;
   pointer-events: none;
-  background: linear-gradient(180deg, rgba(124,240,197,0.06), transparent 50%);
+  background:
+    linear-gradient(180deg, rgba(157,223,143,0.08), transparent 52%),
+    repeating-linear-gradient(
+      120deg,
+      rgba(109, 149, 119, 0.045) 0 14px,
+      rgba(7, 21, 15, 0) 14px 34px
+    );
 }
 
 .page {
@@ -75,22 +82,22 @@ select, input {
   border-radius: 18px;
   padding: 1rem;
   backdrop-filter: blur(8px);
-  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
 }
 
 .card h3 { margin: 0 0 .2rem; font-size: 1.1rem; }
 .meta { color: var(--muted); font-size: .9rem; margin-bottom: .7rem; }
 .chips { display: flex; flex-wrap: wrap; gap: .4rem; margin: .65rem 0; }
 .chip {
-  border: 1px solid rgba(124,240,197,.45);
-  color: #dffcef;
+  border: 1px solid rgba(157,223,143,.5);
+  color: #e2f7de;
   border-radius: 999px;
   padding: .22rem .6rem;
   font-size: .78rem;
 }
 
 .schedule { margin: .7rem 0; padding-left: 1.05rem; }
-.schedule li { margin-bottom: .35rem; color: #d7defd; }
+.schedule li { margin-bottom: .35rem; color: #d4ebde; }
 
 a.source {
   display: inline-flex;
