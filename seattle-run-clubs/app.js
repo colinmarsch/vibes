@@ -1,8 +1,16 @@
+const FOCUS_CATEGORIES = [
+  "Social & Community",
+  "Training & Performance",
+  "Inclusive & Identity-Based",
+  "Trail Running",
+  "Free Weekly 5K"
+];
+
 const clubs = [
   {
     name: "November Project Seattle",
     neighborhood: "Citywide",
-    focus: "Free fitness + social",
+    focus: "Social & Community",
     days: ["Wednesday", "Friday"],
     schedule: [
       "Wednesday · 6:29 AM (Gas Works Park in summer, Seattle Center in winter)",
@@ -13,7 +21,7 @@ const clubs = [
   {
     name: "Seattle Frontrunners",
     neighborhood: "Capitol Hill / Downtown",
-    focus: "LGBTQIA+ community + allies",
+    focus: "Inclusive & Identity-Based",
     days: ["Wednesday", "Saturday"],
     schedule: [
       "Wednesday evening social run/walk (check current post)",
@@ -24,7 +32,7 @@ const clubs = [
   {
     name: "Club Northwest",
     neighborhood: "Seattle area tracks + parks",
-    focus: "Training team / performance",
+    focus: "Training & Performance",
     days: ["Tuesday", "Thursday", "Sunday"],
     schedule: [
       "Tuesday club workout (track / speed focus)",
@@ -36,7 +44,7 @@ const clubs = [
   {
     name: "Green Lake Running Group",
     neighborhood: "Green Lake",
-    focus: "Social mileage",
+    focus: "Social & Community",
     days: ["Wednesday", "Saturday"],
     schedule: [
       "Wednesday evening group run",
@@ -47,7 +55,7 @@ const clubs = [
   {
     name: "Seattle Running Club",
     neighborhood: "Central Seattle",
-    focus: "Social + training",
+    focus: "Training & Performance",
     days: ["Tuesday", "Saturday"],
     schedule: [
       "Tuesday evening workout / social run",
@@ -58,7 +66,7 @@ const clubs = [
   {
     name: "Fleet Feet Seattle Run Club",
     neighborhood: "Capitol Hill / Eastside",
-    focus: "Retail-led community runs",
+    focus: "Social & Community",
     days: ["Tuesday", "Thursday"],
     schedule: [
       "Tuesday evening community run",
@@ -69,7 +77,7 @@ const clubs = [
   {
     name: "Brooks Trailhead Community Runs",
     neighborhood: "Fremont",
-    focus: "Brand community + social miles",
+    focus: "Social & Community",
     days: ["Tuesday"],
     schedule: ["Tuesday evening run from Brooks Trailhead store"],
     source: "https://www.brooksrunning.com/en_us/brooks-run-club/"
@@ -77,7 +85,7 @@ const clubs = [
   {
     name: "West Seattle Runner Group Runs",
     neighborhood: "West Seattle",
-    focus: "Neighborhood social running",
+    focus: "Social & Community",
     days: ["Thursday"],
     schedule: ["Thursday evening shop run"],
     source: "https://www.westseattlerunner.com/events"
@@ -85,7 +93,7 @@ const clubs = [
   {
     name: "Lake Sammamish Run Club",
     neighborhood: "Redmond / Eastside",
-    focus: "Eastside social + training",
+    focus: "Training & Performance",
     days: ["Monday", "Wednesday", "Thursday", "Friday", "Sunday"],
     schedule: [
       "Monday · 6:05 PM intro, run starts around 6:07–6:10 PM (Redmond Downtown Park)",
@@ -99,7 +107,7 @@ const clubs = [
   {
     name: "Issaquah Alps Trail Running Club",
     neighborhood: "Issaquah Alps",
-    focus: "Trail running community",
+    focus: "Trail Running",
     days: ["Tuesday"],
     schedule: ["Tuesday · 6:00 PM trail run events (see current Facebook events listing)"],
     source: "https://www.facebook.com/groups/1199932723806219/events/"
@@ -107,7 +115,7 @@ const clubs = [
   {
     name: "Renton parkrun",
     neighborhood: "Renton (Cedar River Trail)",
-    focus: "Free weekly 5K",
+    focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 9:00 AM free timed 5K"],
     source: "https://www.parkrun.us/renton/"
@@ -115,7 +123,7 @@ const clubs = [
   {
     name: "Des Moines Creek parkrun",
     neighborhood: "Des Moines",
-    focus: "Free weekly 5K",
+    focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 9:00 AM free timed 5K"],
     source: "https://www.parkrun.us/desmoinescreek/"
@@ -123,12 +131,19 @@ const clubs = [
   {
     name: "Perrigo parkrun",
     neighborhood: "Redmond (Perrigo Community Park)",
-    focus: "Free weekly 5K",
+    focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 8:00 AM (May–Sep) / 9:00 AM (Oct–Apr) free timed 5K"],
     source: "https://www.parkrun.us/perrigo/"
   }
 ];
+
+const uncategorizedClubs = clubs.filter((club) => !FOCUS_CATEGORIES.includes(club.focus));
+if (uncategorizedClubs.length) {
+  console.warn(
+    `Some clubs are using unsupported focus categories: ${uncategorizedClubs.map((club) => club.name).join(", ")}`
+  );
+}
 
 const dayFilter = document.getElementById("day-filter");
 const focusFilter = document.getElementById("focus-filter");
@@ -139,8 +154,7 @@ const statsEl = document.getElementById("stats");
 const uniqueDays = [...new Set(clubs.flatMap((club) => club.days))].sort();
 uniqueDays.forEach((day) => dayFilter.insertAdjacentHTML("beforeend", `<option value="${day}">${day}</option>`));
 
-const uniqueFocuses = [...new Set(clubs.map((club) => club.focus))].sort();
-uniqueFocuses.forEach((focus) => focusFilter.insertAdjacentHTML("beforeend", `<option value="${focus}">${focus}</option>`));
+FOCUS_CATEGORIES.forEach((focus) => focusFilter.insertAdjacentHTML("beforeend", `<option value="${focus}">${focus}</option>`));
 
 function render() {
   const day = dayFilter.value;
