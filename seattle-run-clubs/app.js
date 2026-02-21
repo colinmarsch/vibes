@@ -72,7 +72,7 @@ const clubs = [
     focus: "Brand community + social miles",
     days: ["Tuesday"],
     schedule: ["Tuesday evening run from Brooks Trailhead store"],
-    source: "https://www.brooksrunning.com/en_us/community/"
+    source: "https://www.brooksrunning.com/en_us/brooks-run-club/"
   },
   {
     name: "West Seattle Runner Group Runs",
@@ -80,7 +80,7 @@ const clubs = [
     focus: "Neighborhood social running",
     days: ["Thursday"],
     schedule: ["Thursday evening shop run"],
-    source: "https://westseattlerunner.com/pages/events"
+    source: "https://www.westseattlerunner.com/events"
   },
   {
     name: "Lake Sammamish Run Club",
