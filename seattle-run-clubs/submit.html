@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Submit a Run Club Schedule | Seattle Run Clubs</title>
+    <meta
+      name="description"
+      content="Submit a Seattle-area run club or schedule update to be considered for the Seattle Run Clubs directory."
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <main class="page">
+      <header class="hero">
+        <p class="eyebrow">Seattle, WA</p>
+        <h1>Submit a Run Club Schedule</h1>
+        <p class="subtitle">
+          Know a run club that should be listed? Share the details below and we can review it for inclusion.
+        </p>
+      </header>
+
+      <p><a class="back-link" href="index.html">← Back to directory</a></p>
+
+      <section class="submission-panel">
+        <form
+          id="schedule-form"
+          class="submission-form"
+          action="https://formsubmit.co/colinmarsch@gmail.com"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="Seattle Run Clubs: New schedule submission" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://colinmarsch.github.io/vibes/seattle-run-clubs/submit.html?submitted=1" />
+
+          <label>
+            Club name
+            <input type="text" name="Club name" required placeholder="e.g., South Lake Union Sunrise Run" />
+          </label>
+
+          <label>
+            Neighborhood / area
+            <input type="text" name="Neighborhood" required placeholder="e.g., South Lake Union" />
+          </label>
+
+          <label>
+            What is this group's focus?
+            <input type="text" name="Focus" required placeholder="e.g., Social miles, beginner-friendly" />
+          </label>
+
+          <label>
+            Schedule details
+            <textarea
+              name="Schedule details"
+              required
+              rows="5"
+              placeholder="Include days, start times, and meetup location."
+            ></textarea>
+          </label>
+
+          <label>
+            Link to source (website, social, meetup page)
+            <input type="url" name="Source link" required placeholder="https://" />
+          </label>
+
+          <label>
+            Your email (optional)
+            <input type="email" name="Contact email" placeholder="name@example.com" />
+          </label>
+
+          <button type="submit" class="submit-btn">Send submission</button>
+          <p class="form-help">Submissions are sent through FormSubmit and delivered to the site maintainer for review.</p>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="submit.js"></script>
+  </body>
+</html>
