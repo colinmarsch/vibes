@@ -16,7 +16,12 @@ const clubs = [
       "Wednesday · 6:29 AM (Gas Works Park in summer, Seattle Center in winter)",
       "Friday · 6:29 AM (rotating city locations)"
     ],
-    source: "https://november-project.com/seattle-wa/"
+    source: "https://november-project.com/seattle-wa/",
+    location: {
+      label: "Seattle Center (winter default meetup)",
+      lat: 47.6215,
+      lng: -122.3509
+    }
   },
   {
     name: "Seattle Frontrunners",
@@ -27,7 +32,12 @@ const clubs = [
       "Wednesday evening social run/walk (check current post)",
       "Saturday morning social run/walk (check current post)"
     ],
-    source: "https://www.seattlefrontrunners.org/runs-walks"
+    source: "https://www.seattlefrontrunners.org/runs-walks",
+    location: {
+      label: "Cal Anderson Park",
+      lat: 47.6218,
+      lng: -122.3193
+    }
   },
   {
     name: "Club Northwest",
@@ -39,7 +49,12 @@ const clubs = [
       "Thursday club workout",
       "Sunday long-run groups (seasonal)"
     ],
-    source: "https://clubnorthwest.org/workouts"
+    source: "https://clubnorthwest.org/workouts",
+    location: {
+      label: "West Seattle Stadium (common workout site)",
+      lat: 47.5798,
+      lng: -122.3869
+    }
   },
   {
     name: "Green Lake Running Group",
@@ -50,7 +65,12 @@ const clubs = [
       "Wednesday evening group run",
       "Saturday morning group run"
     ],
-    source: "https://www.meetup.com/greenlake-running-group/"
+    source: "https://www.meetup.com/greenlake-running-group/",
+    location: {
+      label: "Green Lake Park",
+      lat: 47.6794,
+      lng: -122.3417
+    }
   },
   {
     name: "Seattle Running Club",
@@ -61,7 +81,12 @@ const clubs = [
       "Tuesday evening workout / social run",
       "Saturday group run"
     ],
-    source: "https://www.meetup.com/seattlerunningclub/"
+    source: "https://www.meetup.com/seattlerunningclub/",
+    location: {
+      label: "Seattle area (rotating meetup locations)",
+      lat: 47.6062,
+      lng: -122.3321
+    }
   },
   {
     name: "Fleet Feet Seattle Run Club",
@@ -72,7 +97,12 @@ const clubs = [
       "Tuesday evening community run",
       "Thursday evening community run / training blocks"
     ],
-    source: "https://www.fleetfeet.com/s/seattle/community"
+    source: "https://www.fleetfeet.com/s/seattle/community",
+    location: {
+      label: "Fleet Feet Seattle (Capitol Hill)",
+      lat: 47.6163,
+      lng: -122.3209
+    }
   },
   {
     name: "Brooks Trailhead Community Runs",
@@ -80,7 +110,12 @@ const clubs = [
     focus: "Social & Community",
     days: ["Tuesday"],
     schedule: ["Tuesday evening run from Brooks Trailhead store"],
-    source: "https://www.brooksrunning.com/en_us/brooks-run-club/"
+    source: "https://www.brooksrunning.com/en_us/brooks-run-club/",
+    location: {
+      label: "Brooks Trailhead Store (Fremont)",
+      lat: 47.6498,
+      lng: -122.3491
+    }
   },
   {
     name: "West Seattle Runner Group Runs",
@@ -88,7 +123,12 @@ const clubs = [
     focus: "Social & Community",
     days: ["Thursday"],
     schedule: ["Thursday evening shop run"],
-    source: "https://www.westseattlerunner.com/events"
+    source: "https://www.westseattlerunner.com/events",
+    location: {
+      label: "West Seattle Runner",
+      lat: 47.5618,
+      lng: -122.3863
+    }
   },
   {
     name: "Lake Sammamish Run Club",
@@ -102,7 +142,12 @@ const clubs = [
       "Friday · 7:00 AM rotating run (Redmond/Kirkland area)",
       "Sunday · 8:30 AM coffee/field-trip run (varies by week)"
     ],
-    source: "https://www.lakesammamishrunclub.org/WeeklyRuns"
+    source: "https://www.lakesammamishrunclub.org/WeeklyRuns",
+    location: {
+      label: "Redmond Downtown Park",
+      lat: 47.6737,
+      lng: -122.1215
+    }
   },
   {
     name: "Issaquah Alps Trail Running Club",
@@ -110,7 +155,12 @@ const clubs = [
     focus: "Trail Running",
     days: ["Tuesday"],
     schedule: ["Tuesday · 6:00 PM trail run events (see current Facebook events listing)"],
-    source: "https://www.facebook.com/groups/1199932723806219/events/"
+    source: "https://www.facebook.com/groups/1199932723806219/events/",
+    location: {
+      label: "Issaquah, WA",
+      lat: 47.5301,
+      lng: -122.0326
+    }
   },
   {
     name: "Renton parkrun",
@@ -118,7 +168,12 @@ const clubs = [
     focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 9:00 AM free timed 5K"],
-    source: "https://www.parkrun.us/renton/"
+    source: "https://www.parkrun.us/renton/",
+    location: {
+      label: "Cedar River Park",
+      lat: 47.4826,
+      lng: -122.1924
+    }
   },
   {
     name: "Des Moines Creek parkrun",
@@ -126,7 +181,12 @@ const clubs = [
     focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 9:00 AM free timed 5K"],
-    source: "https://www.parkrun.us/desmoinescreek/"
+    source: "https://www.parkrun.us/desmoinescreek/",
+    location: {
+      label: "Des Moines Beach Park",
+      lat: 47.3998,
+      lng: -122.3279
+    }
   },
   {
     name: "Perrigo parkrun",
@@ -134,7 +194,12 @@ const clubs = [
     focus: "Free Weekly 5K",
     days: ["Saturday"],
     schedule: ["Saturday · 8:00 AM (May–Sep) / 9:00 AM (Oct–Apr) free timed 5K"],
-    source: "https://www.parkrun.us/perrigo/"
+    source: "https://www.parkrun.us/perrigo/",
+    location: {
+      label: "Perrigo Community Park",
+      lat: 47.6936,
+      lng: -122.0979
+    }
   }
 ];
 
@@ -150,25 +215,89 @@ const focusFilter = document.getElementById("focus-filter");
 const searchInput = document.getElementById("search-input");
 const cardsEl = document.getElementById("cards");
 const statsEl = document.getElementById("stats");
+const mapEl = document.getElementById("map");
+const gridViewBtn = document.getElementById("grid-view-btn");
+const mapViewBtn = document.getElementById("map-view-btn");
+
+let currentView = "grid";
+let map;
+let mapMarkers;
 
 const uniqueDays = [...new Set(clubs.flatMap((club) => club.days))].sort();
 uniqueDays.forEach((day) => dayFilter.insertAdjacentHTML("beforeend", `<option value="${day}">${day}</option>`));
 
 FOCUS_CATEGORIES.forEach((focus) => focusFilter.insertAdjacentHTML("beforeend", `<option value="${focus}">${focus}</option>`));
 
-function render() {
+function getFilteredClubs() {
   const day = dayFilter.value;
   const focus = focusFilter.value;
   const query = searchInput.value.trim().toLowerCase();
 
-  const filtered = clubs.filter((club) => {
+  return clubs.filter((club) => {
     const dayMatch = day === "all" || club.days.includes(day);
     const focusMatch = focus === "all" || club.focus === focus;
-    const q = `${club.name} ${club.neighborhood} ${club.focus} ${club.schedule.join(" ")}`.toLowerCase();
+    const q = `${club.name} ${club.neighborhood} ${club.focus} ${club.schedule.join(" ")} ${club.location.label}`.toLowerCase();
     const queryMatch = !query || q.includes(query);
     return dayMatch && focusMatch && queryMatch;
   });
+}
 
+function ensureMap() {
+  if (map || typeof L === "undefined") {
+    return;
+  }
+
+  map = L.map("map", { scrollWheelZoom: false }).setView([47.6062, -122.3321], 10);
+  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }).addTo(map);
+
+  mapMarkers = L.layerGroup().addTo(map);
+}
+
+function renderMap(filtered) {
+  ensureMap();
+  if (!map || !mapMarkers) {
+    return;
+  }
+
+  mapMarkers.clearLayers();
+  const bounds = [];
+
+  filtered.forEach((club) => {
+    const marker = L.marker([club.location.lat, club.location.lng]).addTo(mapMarkers);
+    marker.bindPopup(`
+      <strong>${club.name}</strong><br />
+      ${club.location.label}<br />
+      <a href="${club.source}" target="_blank" rel="noopener">Source ↗</a>
+    `);
+    bounds.push([club.location.lat, club.location.lng]);
+  });
+
+  if (bounds.length) {
+    map.fitBounds(bounds, { padding: [28, 28], maxZoom: 12 });
+  } else {
+    map.setView([47.6062, -122.3321], 10);
+  }
+}
+
+function setView(view) {
+  currentView = view;
+  const showingMap = view === "map";
+
+  cardsEl.classList.toggle("hidden", showingMap);
+  mapEl.classList.toggle("hidden", !showingMap);
+  gridViewBtn.classList.toggle("is-active", !showingMap);
+  mapViewBtn.classList.toggle("is-active", showingMap);
+
+  if (showingMap) {
+    render();
+    setTimeout(() => map?.invalidateSize(), 0);
+  }
+}
+
+function render() {
+  const filtered = getFilteredClubs();
   statsEl.textContent = `${filtered.length} clubs shown`;
 
   cardsEl.innerHTML = filtered
@@ -188,7 +317,14 @@ function render() {
       </article>`
     )
     .join("");
+
+  if (currentView === "map") {
+    renderMap(filtered);
+  }
 }
 
 [dayFilter, focusFilter, searchInput].forEach((el) => el.addEventListener("input", render));
+gridViewBtn.addEventListener("click", () => setView("grid"));
+mapViewBtn.addEventListener("click", () => setView("map"));
+
 render();
