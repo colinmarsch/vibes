@@ -150,6 +150,64 @@ const clubs = [
     }
   },
   {
+    name: "BelRed Run Club",
+    neighborhood: "Bellevue / Redmond (Eastside)",
+    focus: "Social & Community",
+    days: ["Saturday"],
+    schedule: ["Saturday social run/walk meetups (check current event post for exact time and location)"],
+    source: "https://www.instagram.com/belredrunclub/",
+    location: {
+      label: "Downtown Bellevue Park (frequent meetup area)",
+      lat: 47.6154,
+      lng: -122.2010
+    }
+  },
+  {
+    name: "CSRD (Club Seattle Runners Division)",
+    neighborhood: "South Lake Union",
+    focus: "Social & Community",
+    days: ["Monday", "Saturday"],
+    schedule: [
+      "Monday · 6:30 PM Monday Miles",
+      "Saturday · 8:00 AM Saturday Miles"
+    ],
+    source: "https://www.heylo.com/groups/club-seattle-runners-division",
+    location: {
+      label: "MOHAI",
+      lat: 47.6273,
+      lng: -122.3366
+    }
+  },
+  {
+    name: "Eastside Runners Club",
+    neighborhood: "Eastside / rotating",
+    focus: "Training & Performance",
+    days: ["Saturday"],
+    schedule: ["Saturday · 8:30 AM club run at rotating Eastside (and occasional Seattle-side) locations"],
+    source: "https://eastsiderunners.com/Club-Runs",
+    location: {
+      label: "Eastside rotating meetup locations",
+      lat: 47.6101,
+      lng: -122.2015
+    }
+  },
+  {
+    name: "North Lake Run Club",
+    neighborhood: "Kenmore / North Lake",
+    focus: "Social & Community",
+    days: ["Thursday", "Saturday"],
+    schedule: [
+      "Thursday · 6:00 PM group run",
+      "Saturday · 8:00 AM group run"
+    ],
+    source: "https://www.instagram.com/northlakerunclub/",
+    location: {
+      label: "Kenmore Town Center",
+      lat: 47.7576,
+      lng: -122.2440
+    }
+  },
+  {
     name: "Issaquah Alps Trail Running Club",
     neighborhood: "Issaquah Alps",
     focus: "Trail Running",
