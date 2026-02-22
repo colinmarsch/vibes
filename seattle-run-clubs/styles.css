@@ -176,3 +176,56 @@ textarea {
 .form-status {
   color: var(--accent);
 }
+
+.stats-row {
+  margin: 1.1rem 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.stats {
+  margin: 0;
+}
+
+.view-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(10, 31, 23, 0.7);
+}
+
+.toggle-btn {
+  border: 0;
+  color: var(--muted);
+  background: transparent;
+  padding: 0.45rem 0.9rem;
+  font-size: 0.86rem;
+  cursor: pointer;
+}
+
+.toggle-btn.is-active {
+  background: rgba(157, 223, 143, 0.2);
+  color: var(--text);
+}
+
+.map {
+  height: 620px;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.28);
+}
+
+.hidden {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  .map {
+    height: 460px;
+  }
+}
