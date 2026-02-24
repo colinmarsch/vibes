@@ -9,14 +9,10 @@ function getPreferredTheme() {
 }
 
 function setTheme(theme) {
-  if (theme === "light") {
-    document.body.removeAttribute("data-theme");
-  } else {
-    document.body.setAttribute("data-theme", "dark");
-  }
+  document.body.setAttribute("data-theme", theme);
 
   if (themeToggle) {
-    themeToggle.textContent = theme === "dark" ? "Dark mode" : "Light mode";
+    themeToggle.textContent = theme === "dark" ? "Switch to light" : "Switch to dark";
   }
 }
 
