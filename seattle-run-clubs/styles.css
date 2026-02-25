@@ -237,6 +237,10 @@ textarea { resize: vertical; }
   font-size: 0.85rem;
 }
 
+.footer {
+  margin-top: 1.5rem;
+}
+
 .map {
   height: 620px;
   border: 1px solid var(--border);
