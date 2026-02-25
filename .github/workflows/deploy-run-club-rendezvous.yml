@@ -1,4 +1,4 @@
-name: Deploy Seattle Run Clubs Site
+name: Deploy Run Club Rendezvous Site
 
 on:
   push:
