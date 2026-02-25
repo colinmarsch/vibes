@@ -4,8 +4,8 @@ on:
   push:
     branches: [main]
     paths:
-      - 'seattle-run-clubs/**'
-      - '.github/workflows/deploy-seattle-run-clubs.yml'
+      - 'run-club-rendezvous/**'
+      - '.github/workflows/deploy-run-club-rendezvous.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: seattle-run-clubs
+          path: run-club-rendezvous
 
       - name: Deploy to GitHub Pages
         id: deployment

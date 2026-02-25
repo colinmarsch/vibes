@@ -6,12 +6,12 @@ Static website directory for listing Seattle-area run clubs and weekly schedules
 
 ```bash
 python -m http.server 4173
-# open http://localhost:4173/seattle-run-clubs/
+# open http://localhost:4173/run-club-rendezvous/
 ```
 
 ## GitHub Pages deployment
 
-This repo includes `.github/workflows/deploy-seattle-run-clubs.yml` which deploys this directory to GitHub Pages on push to `main`.
+This repo includes `.github/workflows/deploy-run-club-rendezvous.yml` which deploys this directory to GitHub Pages on push to `main`.
 
 In repository settings, ensure:
 - **Pages** source is set to **GitHub Actions**.

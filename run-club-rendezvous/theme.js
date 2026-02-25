@@ -1,4 +1,4 @@
-const THEME_KEY = "seattle-run-clubs-theme";
+const THEME_KEY = "run-club-rendezvous-theme";
 const themeToggle = document.getElementById("theme-toggle");
 
 function getPreferredTheme() {
