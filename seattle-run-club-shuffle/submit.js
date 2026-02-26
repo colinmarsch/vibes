@@ -3,6 +3,7 @@ const formEl = document.getElementById("schedule-form");
 const params = new URLSearchParams(window.location.search);
 
 if (params.get("submitted") === "1") {
+  statusEl.classList.add("is-success");
   statusEl.textContent = "Thanks! Your submission was sent and is now pending review.";
   window.history.replaceState({}, "", "submit.html");
 }
