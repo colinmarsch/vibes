@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">Seattle Run Clubs social preview</title>
+  <desc id="desc">A social card for Seattle Run Clubs showing title and subtitle over a gradient background.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="45%" stop-color="#1f2937" />
+      <stop offset="100%" stop-color="#0f766e" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+
+  <g opacity="0.28" stroke="#34d399" stroke-width="5" fill="none">
+    <path d="M80 485 C280 300, 500 280, 1080 140" />
+    <path d="M110 530 C315 350, 520 330, 1100 190" />
+  </g>
+
+  <text x="96" y="250" fill="#e5e7eb" font-size="76" font-weight="700" font-family="Inter, Arial, sans-serif">
+    Seattle Run Clubs
+  </text>
+  <text x="96" y="320" fill="#d1d5db" font-size="38" font-weight="500" font-family="Inter, Arial, sans-serif">
+    Discover weekly schedules across Seattle.
+  </text>
+  <text x="96" y="520" fill="#6ee7b7" font-size="30" font-weight="600" font-family="Inter, Arial, sans-serif">
+    seattle-run-club-shuffle
+  </text>
+</svg>

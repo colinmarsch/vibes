@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title id="title">Seattle Run Clubs favicon</title>
+  <desc id="desc">A stylized running track with an S mark.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#7c3aed" />
+      <stop offset="100%" stop-color="#0ea5e9" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <path d="M14 44c6-13 16-22 36-24" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.85"/>
+  <path d="M20 49c5-11 13-17 27-18" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity="0.95"/>
+  <circle cx="38" cy="18" r="4" fill="#fff" />
+</svg>
