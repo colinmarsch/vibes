@@ -15,3 +15,23 @@ This repo includes `.github/workflows/deploy-seattle-run-club-shuffle.yml` which
 
 In repository settings, ensure:
 - **Pages** source is set to **GitHub Actions**.
+
+
+## Analytics setup
+
+This site now includes Google Analytics 4 instrumentation for page views and basic usage events (filters, search, view toggle, outbound source clicks, and submission flow).
+
+1. Open `seattle-run-club-shuffle/analytics.js`.
+2. Replace `G-XXXXXXXXXX` with your GA4 Measurement ID.
+3. Deploy the site.
+
+Once configured, GA4 will capture:
+- `page_view`
+- `filter_day`
+- `filter_focus`
+- `search`
+- `set_view`
+- `open_club_source`
+- `navigate_to_submit`
+- `submit_form_started`
+- `schedule_submitted`

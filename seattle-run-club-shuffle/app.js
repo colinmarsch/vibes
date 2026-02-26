@@ -282,6 +282,16 @@ let map;
 let mapMarkers;
 
 const uniqueDays = [...new Set(clubs.flatMap((club) => club.days))].sort();
+
+
+function trackUsage(eventName, params = {}) {
+  if (typeof window.trackEvent === "function") {
+    window.trackEvent(eventName, params);
+  }
+}
+
+let searchTrackingTimeout;
+
 uniqueDays.forEach((day) => dayFilter.insertAdjacentHTML("beforeend", `<option value="${day}">${day}</option>`));
 
 FOCUS_CATEGORIES.forEach((focus) => focusFilter.insertAdjacentHTML("beforeend", `<option value="${focus}">${focus}</option>`));
@@ -381,8 +391,43 @@ function render() {
   }
 }
 
-[dayFilter, focusFilter, searchInput].forEach((el) => el.addEventListener("input", render));
-gridViewBtn.addEventListener("click", () => setView("grid"));
-mapViewBtn.addEventListener("click", () => setView("map"));
+dayFilter.addEventListener("input", () => {
+  render();
+  trackUsage("filter_day", { day: dayFilter.value });
+});
+
+focusFilter.addEventListener("input", () => {
+  render();
+  trackUsage("filter_focus", { focus: focusFilter.value });
+});
+
+searchInput.addEventListener("input", () => {
+  render();
+  clearTimeout(searchTrackingTimeout);
+  searchTrackingTimeout = setTimeout(() => {
+    trackUsage("search", { query_length: searchInput.value.trim().length });
+  }, 500);
+});
+
+gridViewBtn.addEventListener("click", () => {
+  setView("grid");
+  trackUsage("set_view", { view: "grid" });
+});
+
+mapViewBtn.addEventListener("click", () => {
+  setView("map");
+  trackUsage("set_view", { view: "map" });
+});
+
+cardsEl.addEventListener("click", (event) => {
+  const sourceLink = event.target.closest("a.source");
+  if (!sourceLink) {
+    return;
+  }
+
+  trackUsage("open_club_source", {
+    club: sourceLink.closest("article.card")?.querySelector("h3")?.textContent || "unknown"
+  });
+});
 
 render();
