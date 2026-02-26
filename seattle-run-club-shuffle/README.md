@@ -9,6 +9,12 @@ python -m http.server 4173
 # open http://localhost:4173/seattle-run-club-shuffle/
 ```
 
+## Google Analytics
+
+This site includes Google Analytics (GA4) via the global site tag on `index.html` and `submit.html`.
+
+Before deploying, replace `G-REPLACE_WITH_MEASUREMENT_ID` in both files with your GA4 Measurement ID (for example, `G-ABC123XYZ9`).
+
 ## GitHub Pages deployment
 
 This repo includes `.github/workflows/deploy-seattle-run-club-shuffle.yml` which deploys this directory to GitHub Pages on push to `main`.
