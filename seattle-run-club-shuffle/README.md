@@ -11,9 +11,9 @@ python -m http.server 4173
 
 ## Google Analytics
 
-This site includes Google Analytics (GA4) via the global site tag on `index.html` and `submit.html`.
+This site includes Google Analytics (GA4) via the global site tag on `index.html`, `submit.html`, and `report.html`.
 
-Before deploying, replace `G-REPLACE_WITH_MEASUREMENT_ID` in both files with your GA4 Measurement ID (for example, `G-ABC123XYZ9`).
+Before deploying, replace `G-REPLACE_WITH_MEASUREMENT_ID` in all three files with your GA4 Measurement ID (for example, `G-ABC123XYZ9`).
 
 ## GitHub Pages deployment
 
