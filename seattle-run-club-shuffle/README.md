@@ -15,3 +15,9 @@ This repo includes `.github/workflows/deploy-seattle-run-club-shuffle.yml` which
 
 In repository settings, ensure:
 - **Pages** source is set to **GitHub Actions**.
+
+
+## SEO
+
+- Canonical URLs are set in `index.html` and `submit.html`.
+- `robots.txt` and `sitemap.xml` are included for search engine discovery.
