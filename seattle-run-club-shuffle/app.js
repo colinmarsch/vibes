@@ -276,6 +276,8 @@ const statsEl = document.getElementById("stats");
 const mapEl = document.getElementById("map");
 const gridViewBtn = document.getElementById("grid-view-btn");
 const mapViewBtn = document.getElementById("map-view-btn");
+const noResultsEl = document.getElementById("no-results");
+const resetFiltersBtn = document.getElementById("reset-filters-btn");
 
 let currentView = "grid";
 let map;
@@ -354,8 +356,16 @@ function setView(view) {
   }
 }
 
+function resetFilters() {
+  dayFilter.value = "all";
+  focusFilter.value = "all";
+  searchInput.value = "";
+  render();
+}
+
 function render() {
   const filtered = getFilteredClubs();
+  const hasResults = filtered.length > 0;
   statsEl.textContent = `${filtered.length} clubs shown`;
 
   cardsEl.innerHTML = filtered
@@ -376,12 +386,15 @@ function render() {
     )
     .join("");
 
+  noResultsEl.classList.toggle("hidden", hasResults || currentView === "map");
+
   if (currentView === "map") {
     renderMap(filtered);
   }
 }
 
 [dayFilter, focusFilter, searchInput].forEach((el) => el.addEventListener("input", render));
+resetFiltersBtn.addEventListener("click", resetFilters);
 gridViewBtn.addEventListener("click", () => setView("grid"));
 mapViewBtn.addEventListener("click", () => setView("map"));
 
