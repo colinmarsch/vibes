@@ -1,11 +1,11 @@
-name: Deploy Seattle Run Clubs Site
+name: Deploy Seattle Run Club Shuffle Site
 
 on:
   push:
     branches: [main]
     paths:
-      - 'seattle-run-clubs/**'
-      - '.github/workflows/deploy-seattle-run-clubs.yml'
+      - 'seattle-run-club-shuffle/**'
+      - '.github/workflows/deploy-seattle-run-club-shuffle.yml'
   workflow_dispatch:
 
 permissions:
@@ -33,7 +33,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: seattle-run-clubs
+          path: .
 
       - name: Deploy to GitHub Pages
         id: deployment
