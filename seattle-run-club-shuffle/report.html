@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-REPLACE_WITH_MEASUREMENT_ID"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag('js', new Date());
+      gtag('config', 'G-REPLACE_WITH_MEASUREMENT_ID');
+    </script>
+    <title>Report a Club Issue | Seattle Run Clubs</title>
+    <meta
+      name="description"
+      content="Report incorrect Seattle-area run club listing details so the Seattle Run Clubs directory can be updated."
+    />
+    <link rel="canonical" href="https://colinmarsch.github.io/vibes/seattle-run-club-shuffle/report.html" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Report a Club Issue | Seattle Run Clubs" />
+    <meta
+      property="og:description"
+      content="Report incorrect Seattle-area run club listing details so the Seattle Run Clubs directory can be updated."
+    />
+    <meta property="og:url" content="https://colinmarsch.github.io/vibes/seattle-run-club-shuffle/report.html" />
+    <meta property="og:image" content="https://colinmarsch.github.io/vibes/seattle-run-club-shuffle/og-image.svg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Report a Club Issue | Seattle Run Clubs" />
+    <meta
+      name="twitter:description"
+      content="Report incorrect Seattle-area run club listing details so the Seattle Run Clubs directory can be updated."
+    />
+    <meta name="twitter:image" content="https://colinmarsch.github.io/vibes/seattle-run-club-shuffle/og-image.svg" />
+
+    <link rel="icon" type="image/svg+xml" href="favicon.svg" />
+    <link rel="shortcut icon" href="favicon.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="background-glow"></div>
+    <main class="page">
+      <div class="topbar">
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">Theme</button>
+      </div>
+      <header class="hero">
+        <p class="eyebrow">Seattle, WA</p>
+        <h1>Report a Club Listing Issue</h1>
+        <p class="subtitle">
+          Spot incorrect details in a club listing? Send an edit request and we can review the update.
+        </p>
+      </header>
+
+      <p><a class="back-link" href="index.html">← Back to directory</a></p>
+
+      <section class="submission-panel">
+        <form
+          id="issue-form"
+          class="submission-form"
+          action="https://formsubmit.co/f1ff4908c5643a3a4560094c31b50867"
+          method="POST"
+        >
+          <input type="hidden" name="_subject" value="Seattle Run Clubs: Listing edit request" />
+          <input type="hidden" name="_captcha" value="false" />
+          <input type="hidden" name="_next" value="https://colinmarsch.github.io/vibes/seattle-run-club-shuffle/report.html?submitted=1" />
+
+          <label>
+            Club name
+            <input type="text" name="Club name" required placeholder="e.g., Green Lake Running Group" />
+          </label>
+
+          <label>
+            What looks incorrect?
+            <textarea
+              name="Incorrect details"
+              required
+              rows="5"
+              placeholder="Tell us what's out of date or wrong (schedule, location, source link, etc.)."
+            ></textarea>
+          </label>
+
+          <label>
+            Suggested correction
+            <textarea
+              name="Suggested correction"
+              required
+              rows="5"
+              placeholder="Share the corrected details and include day/time updates when possible."
+            ></textarea>
+          </label>
+
+          <label>
+            Link to source that confirms the update
+            <input type="url" name="Correction source link" required placeholder="https://" />
+          </label>
+
+          <label>
+            Your email (optional)
+            <input type="email" name="Contact email" placeholder="name@example.com" />
+          </label>
+
+          <button type="submit" class="submit-btn">Send edit request</button>
+          <p class="form-help">Reports are sent through FormSubmit and delivered to the site maintainer for review.</p>
+          <p id="form-status" class="form-status" aria-live="polite"></p>
+        </form>
+      </section>
+    </main>
+
+    <script src="theme.js"></script>
+    <script src="report.js"></script>
+  </body>
+</html>
