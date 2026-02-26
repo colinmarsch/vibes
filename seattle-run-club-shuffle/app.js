@@ -355,8 +355,9 @@ function setView(view) {
   mapEl.setAttribute("aria-hidden", String(!showingMap));
   cardsEl.setAttribute("aria-hidden", String(showingMap));
 
+  render();
+
   if (showingMap) {
-    render();
     mapEl.focus();
     setTimeout(() => map?.invalidateSize(), 0);
   }
