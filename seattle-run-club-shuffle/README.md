@@ -21,8 +21,8 @@ In repository settings, ensure:
 
 This site now includes Google Analytics 4 instrumentation for page views and basic usage events (filters, search, view toggle, outbound source clicks, and submission flow).
 
-1. Open `seattle-run-club-shuffle/analytics.js`.
-2. Replace `G-XXXXXXXXXX` with your GA4 Measurement ID.
+1. Open both `seattle-run-club-shuffle/index.html` and `seattle-run-club-shuffle/submit.html`.
+2. Set `<meta name="ga-measurement-id" content="G-XXXXXXXXXX" />` to your GA4 Measurement ID.
 3. Deploy the site.
 
 Once configured, GA4 will capture:

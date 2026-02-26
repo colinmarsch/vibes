@@ -1,11 +1,13 @@
-const ANALYTICS_MEASUREMENT_ID = "G-XXXXXXXXXX";
+const analyticsMeta = document.querySelector('meta[name="ga-measurement-id"]');
+const ANALYTICS_MEASUREMENT_ID = analyticsMeta?.content?.trim() || "";
 
-const hasRealMeasurementId = /^G-[A-Z0-9]+$/i.test(ANALYTICS_MEASUREMENT_ID) && !ANALYTICS_MEASUREMENT_ID.includes("XXXXXXXX");
+const hasRealMeasurementId = /^G-[A-Z0-9]+$/i.test(ANALYTICS_MEASUREMENT_ID);
 
 function trackEvent(name, params = {}) {
   if (typeof window.gtag !== "function") {
     return;
   }
+
   window.gtag("event", name, params);
 }
 
@@ -21,17 +23,22 @@ if (hasRealMeasurementId) {
   function gtag() {
     window.dataLayer.push(arguments);
   }
+
   window.gtag = gtag;
 
   gtag("js", new Date());
   gtag("config", ANALYTICS_MEASUREMENT_ID, {
-    page_path: window.location.pathname
+    send_page_view: false,
+    anonymize_ip: true
   });
 
   trackEvent("page_view", {
     page_title: document.title,
-    page_path: window.location.pathname
+    page_path: window.location.pathname,
+    page_location: window.location.href
   });
+} else {
+  console.info("Analytics disabled: set <meta name=\"ga-measurement-id\" content=\"G-...\"> to enable GA4.");
 }
 
 document.addEventListener("click", (event) => {
