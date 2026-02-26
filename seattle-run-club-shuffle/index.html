@@ -27,10 +27,11 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Skip to main content</a>
     <div class="background-glow"></div>
-    <main class="page">
+    <main id="main-content" class="page">
       <div class="topbar">
-        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme">Theme</button>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Toggle color theme" aria-pressed="false">Theme</button>
       </div>
       <header class="hero">
         <p class="eyebrow">Seattle, WA</p>
@@ -43,38 +44,39 @@
       <p class="submit-cta"><a class="submit-link" href="submit.html">Know a schedule we should add? Submit it here →</a></p>
 
       <section class="controls" aria-label="Filters">
-        <label>
+        <label for="day-filter">
           Day
           <select id="day-filter">
             <option value="all">All days</option>
           </select>
         </label>
-        <label>
+        <label for="focus-filter">
           Focus
           <select id="focus-filter">
             <option value="all">All focuses</option>
           </select>
         </label>
-        <label class="search">
+        <label class="search" for="search-input">
           Search
-          <input id="search-input" type="search" placeholder="Club, neighborhood, meetup..." />
+          <input id="search-input" type="search" placeholder="Club, neighborhood, meetup..." autocomplete="off" />
         </label>
       </section>
 
       <section class="stats-row">
-        <section class="stats" id="stats"></section>
+        <section class="stats" id="stats" aria-live="polite"></section>
         <div class="view-toggle" role="group" aria-label="Choose a view">
-          <button id="grid-view-btn" class="toggle-btn is-active" type="button">Grid view</button>
-          <button id="map-view-btn" class="toggle-btn" type="button">Map view</button>
+          <button id="grid-view-btn" class="toggle-btn is-active" type="button" aria-pressed="true" aria-controls="cards">Grid view</button>
+          <button id="map-view-btn" class="toggle-btn" type="button" aria-pressed="false" aria-controls="map">Map view</button>
         </div>
       </section>
-      <section class="cards" id="cards"></section>
+      <section class="cards" id="cards" aria-label="Run club results"></section>
       <section id="no-results" class="empty-state hidden" aria-live="polite">
         <h2>No clubs found</h2>
         <p>Try broadening your search or clearing filters to see all Seattle-area run clubs again.</p>
         <button id="reset-filters-btn" class="reset-btn" type="button">Reset filters</button>
       </section>
-      <section id="map" class="map hidden" aria-label="Map of run clubs"></section>
+      <section id="map" class="map hidden" aria-label="Map of run clubs" aria-hidden="true" tabindex="-1"></section>
+      <p id="results-announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></p>
 
       <footer class="footer">
         Last updated: February 2026.

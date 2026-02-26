@@ -13,6 +13,7 @@ function setTheme(theme) {
 
   if (themeToggle) {
     themeToggle.textContent = theme === "dark" ? "Switch to light" : "Switch to dark";
+    themeToggle.setAttribute("aria-pressed", String(theme === "dark"));
   }
 }
 

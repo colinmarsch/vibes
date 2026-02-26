@@ -278,6 +278,7 @@ const gridViewBtn = document.getElementById("grid-view-btn");
 const mapViewBtn = document.getElementById("map-view-btn");
 const noResultsEl = document.getElementById("no-results");
 const resetFiltersBtn = document.getElementById("reset-filters-btn");
+const resultsAnnouncer = document.getElementById("results-announcer");
 
 let currentView = "grid";
 let map;
@@ -349,9 +350,14 @@ function setView(view) {
   mapEl.classList.toggle("hidden", !showingMap);
   gridViewBtn.classList.toggle("is-active", !showingMap);
   mapViewBtn.classList.toggle("is-active", showingMap);
+  gridViewBtn.setAttribute("aria-pressed", String(!showingMap));
+  mapViewBtn.setAttribute("aria-pressed", String(showingMap));
+  mapEl.setAttribute("aria-hidden", String(!showingMap));
+  cardsEl.setAttribute("aria-hidden", String(showingMap));
 
   if (showingMap) {
     render();
+    mapEl.focus();
     setTimeout(() => map?.invalidateSize(), 0);
   }
 }
@@ -366,12 +372,13 @@ function resetFilters() {
 function render() {
   const filtered = getFilteredClubs();
   const hasResults = filtered.length > 0;
-  statsEl.textContent = `${filtered.length} clubs shown`;
+  const resultSummary = `${filtered.length} clubs shown`;
+  statsEl.textContent = resultSummary;
 
   cardsEl.innerHTML = filtered
     .map(
       (club) => `
-      <article class="card">
+      <article class="card" role="listitem">
         <h3>${club.name}</h3>
         <div class="meta">${club.neighborhood}</div>
         <div class="chips">
@@ -385,8 +392,10 @@ function render() {
       </article>`
     )
     .join("");
+  cardsEl.setAttribute("role", "list");
 
   noResultsEl.classList.toggle("hidden", hasResults || currentView === "map");
+  resultsAnnouncer.textContent = hasResults ? resultSummary : "No clubs found. Try broadening your search or resetting filters.";
 
   if (currentView === "map") {
     renderMap(filtered);
