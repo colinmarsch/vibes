@@ -1,0 +1,29 @@
+name: Check Seattle Run Club Shuffle Site
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'seattle-run-club-shuffle/**'
+      - '.github/workflows/check-seattle-run-club-shuffle.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./seattle-run-club-shuffle
+          destination: ./_site
