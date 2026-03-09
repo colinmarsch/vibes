@@ -118,6 +118,19 @@ const clubs = [
     }
   },
   {
+    name: "Westies Run Club",
+    neighborhood: "West Seattle",
+    focus: "Social & Community",
+    days: ["Thursday"],
+    schedule: ["Thursday evening neighborhood social run (check current event post for exact start location/time)"],
+    source: "https://www.instagram.com/westiesrunclub/",
+    location: {
+      label: "West Seattle Junction",
+      lat: 47.5621,
+      lng: -122.3868
+    }
+  },
+  {
     name: "West Seattle Runner Group Runs",
     neighborhood: "West Seattle",
     focus: "Social & Community",
