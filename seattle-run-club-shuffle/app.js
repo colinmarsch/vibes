@@ -221,6 +221,58 @@ const clubs = [
     }
   },
   {
+    name: "Totem Lake Run Club",
+    neighborhood: "Kirkland (Totem Lake)",
+    focus: "Social & Community",
+    days: ["Wednesday"],
+    schedule: ["Wednesday evening run from Totem Lake area (check current event post for exact start time/location)"],
+    source: "https://www.instagram.com/totemlakerunclub/",
+    location: {
+      label: "Totem Lake Village",
+      lat: 47.7163,
+      lng: -122.1806
+    }
+  },
+  {
+    name: "ETA Run Club",
+    neighborhood: "Bothell",
+    focus: "Social & Community",
+    days: ["Tuesday"],
+    schedule: ["Tuesday evening community run in Bothell (check current event post for exact start time/location)"],
+    source: "https://www.instagram.com/etarunclub/",
+    location: {
+      label: "Downtown Bothell",
+      lat: 47.7601,
+      lng: -122.2054
+    }
+  },
+  {
+    name: "Cascade Run Club",
+    neighborhood: "Redmond / Bellevue",
+    focus: "Social & Community",
+    days: ["Thursday"],
+    schedule: ["Thursday evening Eastside community run (Redmond/Bellevue, check current event post for exact meetup)"],
+    source: "https://www.instagram.com/cascaderunclub/",
+    location: {
+      label: "Downtown Bellevue Park",
+      lat: 47.6154,
+      lng: -122.2010
+    }
+  },
+  {
+    name: "Cowgill Trail Collective",
+    neighborhood: "Eastside / rotating",
+    focus: "Trail Running",
+    days: ["Saturday"],
+    schedule: ["Saturday trail group run (check current event post for exact trailhead, route, and start time)"],
+    source: "https://www.instagram.com/cowgilltrailcollective/",
+    location: {
+      label: "Eastside rotating meetup locations",
+      lat: 47.6101,
+      lng: -122.2015
+    }
+  },
+  {
     name: "Issaquah Alps Trail Running Club",
     neighborhood: "Issaquah Alps",
     focus: "Trail Running",
