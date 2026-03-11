@@ -325,6 +325,103 @@ textarea { resize: vertical; }
   margin-top: 1.5rem;
 }
 
+
+.calendar {
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(16px);
+  padding: 1rem;
+}
+
+.calendar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.9rem;
+}
+
+.calendar-header h2 {
+  margin: 0;
+  font-size: 1.15rem;
+}
+
+.calendar-header p {
+  margin: 0.35rem 0 0;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 0.7rem;
+}
+
+.calendar-day {
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--surface);
+  padding: 0.7rem;
+  min-height: 220px;
+}
+
+.calendar-day h3 {
+  margin: 0;
+  font-size: 0.88rem;
+}
+
+.calendar-day ul {
+  list-style: none;
+  margin: 0.6rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.6rem;
+}
+
+.calendar-day li {
+  border-left: 3px solid var(--club-color, var(--accent));
+  padding-left: 0.48rem;
+  background: color-mix(in srgb, var(--club-color, var(--accent)) 10%, transparent);
+  border-radius: 0.35rem;
+  padding-top: 0.3rem;
+  padding-bottom: 0.3rem;
+}
+
+.calendar-time,
+.calendar-club,
+.calendar-meta {
+  margin: 0;
+}
+
+.calendar-time {
+  color: var(--muted);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.calendar-club {
+  font-size: 0.82rem;
+  font-weight: 700;
+  margin-top: 0.15rem;
+  color: var(--club-color, var(--text));
+}
+
+.calendar-meta {
+  color: var(--muted);
+  font-size: 0.72rem;
+  margin-top: 0.1rem;
+}
+
+.calendar-empty {
+  margin: 0.6rem 0 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+}
+
 .map {
   height: 620px;
   border: 1px solid var(--border);
@@ -358,10 +455,13 @@ textarea { resize: vertical; }
 
 @media (max-width: 820px) {
   .controls { grid-template-columns: 1fr; }
+  .calendar-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 @media (max-width: 700px) {
   .page { padding-top: 1.3rem; }
   .topbar { margin-bottom: 1.2rem; }
   .map { height: 460px; }
+  .calendar-grid { grid-template-columns: 1fr; }
+  .calendar-day { min-height: 0; }
 }

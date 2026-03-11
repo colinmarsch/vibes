@@ -6,6 +6,24 @@ const FOCUS_CATEGORIES = [
   "Free Weekly 5K"
 ];
 
+const DAY_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const CALENDAR_TIMEZONE = "America/Los_Angeles";
+const DEFAULT_EVENT_HOUR = 9;
+const CLUB_COLOR_PALETTE = [
+  "#e63946",
+  "#f77f00",
+  "#fcbf49",
+  "#2a9d8f",
+  "#219ebc",
+  "#4361ee",
+  "#7209b7",
+  "#ff006e",
+  "#6a994e",
+  "#bc6c25",
+  "#1d3557",
+  "#8338ec"
+];
+
 const clubs = [
   {
     name: "November Project Seattle",
@@ -339,8 +357,10 @@ const searchInput = document.getElementById("search-input");
 const cardsEl = document.getElementById("cards");
 const statsEl = document.getElementById("stats");
 const mapEl = document.getElementById("map");
+const calendarEl = document.getElementById("calendar");
 const gridViewBtn = document.getElementById("grid-view-btn");
 const mapViewBtn = document.getElementById("map-view-btn");
+const calendarViewBtn = document.getElementById("calendar-view-btn");
 const noResultsEl = document.getElementById("no-results");
 const resetFiltersBtn = document.getElementById("reset-filters-btn");
 const resultsAnnouncer = document.getElementById("results-announcer");
@@ -349,10 +369,18 @@ let currentView = "grid";
 let map;
 let mapMarkers;
 
-const uniqueDays = [...new Set(clubs.flatMap((club) => club.days))].sort();
+const uniqueDays = [...new Set(clubs.flatMap((club) => club.days))].sort((a, b) => DAY_ORDER.indexOf(a) - DAY_ORDER.indexOf(b));
 uniqueDays.forEach((day) => dayFilter.insertAdjacentHTML("beforeend", `<option value="${day}">${day}</option>`));
 
 FOCUS_CATEGORIES.forEach((focus) => focusFilter.insertAdjacentHTML("beforeend", `<option value="${focus}">${focus}</option>`));
+
+function getClubColor(clubName) {
+  let hash = 0;
+  for (const char of clubName) {
+    hash = (hash * 31 + char.charCodeAt(0)) >>> 0;
+  }
+  return CLUB_COLOR_PALETTE[hash % CLUB_COLOR_PALETTE.length];
+}
 
 function getFilteredClubs() {
   const day = dayFilter.value;
@@ -366,6 +394,171 @@ function getFilteredClubs() {
     const queryMatch = !query || q.includes(query);
     return dayMatch && focusMatch && queryMatch;
   });
+}
+
+function parseTime(entry) {
+  const explicitTimeMatch = entry.match(/(\d{1,2})(?::(\d{2}))?\s?(AM|PM)/i);
+  if (explicitTimeMatch) {
+    let hour = Number(explicitTimeMatch[1]);
+    const minute = Number(explicitTimeMatch[2] || "0");
+    const meridiem = explicitTimeMatch[3].toUpperCase();
+    if (meridiem === "PM" && hour !== 12) hour += 12;
+    if (meridiem === "AM" && hour === 12) hour = 0;
+    return { hour, minute, label: `${explicitTimeMatch[1]}:${String(minute).padStart(2, "0")} ${meridiem}` };
+  }
+
+  const lower = entry.toLowerCase();
+  if (lower.includes("morning")) return { hour: 8, minute: 0, label: "Morning" };
+  if (lower.includes("evening")) return { hour: 18, minute: 0, label: "Evening" };
+
+  return { hour: DEFAULT_EVENT_HOUR, minute: 0, label: "Time TBD" };
+}
+
+function buildWeeklyEvents(clubsToRender) {
+  return clubsToRender.flatMap((club) =>
+    club.schedule
+      .map((entry) => {
+        const day = DAY_ORDER.find((candidate) => entry.startsWith(candidate)) || club.days.find((candidate) => entry.startsWith(candidate));
+        if (!day) return null;
+        const time = parseTime(entry);
+        return {
+          id: `${club.name}-${day}-${entry}`,
+          day,
+          clubName: club.name,
+          neighborhood: club.neighborhood,
+          location: club.location.label,
+          source: club.source,
+          detail: entry,
+          color: getClubColor(club.name),
+          timeLabel: time.label,
+          startHour: time.hour,
+          startMinute: time.minute
+        };
+      })
+      .filter(Boolean)
+  );
+}
+
+function renderCalendar(clubsToRender) {
+  const events = buildWeeklyEvents(clubsToRender);
+  const eventsByDay = DAY_ORDER.reduce((acc, day) => {
+    acc[day] = events
+      .filter((event) => event.day === day)
+      .sort((a, b) => a.startHour * 60 + a.startMinute - (b.startHour * 60 + b.startMinute));
+    return acc;
+  }, {});
+
+  calendarEl.innerHTML = `
+    <header class="calendar-header">
+      <div>
+        <h2>Weekly calendar</h2>
+        <p>Recurring run-club events this week${clubsToRender.length === clubs.length ? " (all clubs)" : " (filtered clubs)"}.</p>
+      </div>
+      <button id="calendar-download-btn" class="reset-btn" type="button">Download iCal (.ics)</button>
+    </header>
+    <div class="calendar-grid" role="list" aria-label="Weekly event calendar">
+      ${DAY_ORDER.map(
+        (day) => `
+          <section class="calendar-day" role="listitem" aria-label="${day}">
+            <h3>${day}</h3>
+            ${
+              eventsByDay[day].length
+                ? `<ul>${eventsByDay[day]
+                    .map(
+                      (event) => `
+                      <li style="--club-color: ${event.color}">
+                        <p class="calendar-time">${event.timeLabel}</p>
+                        <p class="calendar-club">${event.clubName}</p>
+                        <p class="calendar-meta">${event.location}</p>
+                      </li>
+                    `
+                    )
+                    .join("")}</ul>`
+                : '<p class="calendar-empty">No listed events.</p>'
+            }
+          </section>
+        `
+      ).join("")}
+    </div>
+  `;
+
+  const downloadButton = document.getElementById("calendar-download-btn");
+  downloadButton.addEventListener("click", () => downloadIcs(events));
+}
+
+function toDateStamp(date) {
+  return `${date.getFullYear()}${String(date.getMonth() + 1).padStart(2, "0")}${String(date.getDate()).padStart(2, "0")}`;
+}
+
+function toDateTimeStamp(date) {
+  return `${toDateStamp(date)}T${String(date.getHours()).padStart(2, "0")}${String(date.getMinutes()).padStart(2, "0")}00`;
+}
+
+function getNextDayDate(day, hour, minute) {
+  const now = new Date();
+  const targetDow = (DAY_ORDER.indexOf(day) + 1) % 7;
+  const delta = (targetDow - now.getDay() + 7) % 7;
+  const eventDate = new Date(now);
+  eventDate.setDate(now.getDate() + delta);
+  eventDate.setHours(hour, minute, 0, 0);
+
+  if (eventDate <= now) {
+    eventDate.setDate(eventDate.getDate() + 7);
+  }
+
+  return eventDate;
+}
+
+function escapeIcsText(text) {
+  return text.replace(/\\/g, "\\\\").replace(/,/g, "\\,").replace(/;/g, "\\;").replace(/\n/g, "\\n");
+}
+
+function downloadIcs(events) {
+  const now = new Date();
+  const generatedAt = `${toDateTimeStamp(now)}Z`;
+  const icsLines = [
+    "BEGIN:VCALENDAR",
+    "VERSION:2.0",
+    "PRODID:-//Seattle Run Clubs//Weekly Calendar//EN",
+    "CALSCALE:GREGORIAN",
+    "METHOD:PUBLISH",
+    `X-WR-CALNAME:Seattle Run Clubs Weekly Schedule`,
+    `X-WR-TIMEZONE:${CALENDAR_TIMEZONE}`
+  ];
+
+  events.forEach((event) => {
+    const start = getNextDayDate(event.day, event.startHour, event.startMinute);
+    const end = new Date(start);
+    end.setHours(start.getHours() + 1);
+
+    const uid = `${btoa(unescape(encodeURIComponent(`${event.clubName}-${event.day}-${event.detail}`))).replace(/=/g, "")}@seattle-run-clubs`;
+
+    icsLines.push(
+      "BEGIN:VEVENT",
+      `UID:${uid}`,
+      `DTSTAMP:${generatedAt}`,
+      `DTSTART;TZID=${CALENDAR_TIMEZONE}:${toDateTimeStamp(start)}`,
+      `DTEND;TZID=${CALENDAR_TIMEZONE}:${toDateTimeStamp(end)}`,
+      "RRULE:FREQ=WEEKLY",
+      `SUMMARY:${escapeIcsText(event.clubName)}`,
+      `DESCRIPTION:${escapeIcsText(`${event.detail}\nNeighborhood: ${event.neighborhood}\nSource: ${event.source}`)}`,
+      `LOCATION:${escapeIcsText(event.location)}`,
+      `URL:${event.source}`,
+      "END:VEVENT"
+    );
+  });
+
+  icsLines.push("END:VCALENDAR");
+
+  const blob = new Blob([icsLines.join("\r\n")], { type: "text/calendar;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "seattle-run-clubs-weekly.ics";
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  URL.revokeObjectURL(url);
 }
 
 function ensureMap() {
@@ -391,9 +584,16 @@ function renderMap(filtered) {
   const bounds = [];
 
   filtered.forEach((club) => {
-    const marker = L.marker([club.location.lat, club.location.lng]).addTo(mapMarkers);
+    const clubColor = getClubColor(club.name);
+    const marker = L.circleMarker([club.location.lat, club.location.lng], {
+      radius: 8,
+      color: clubColor,
+      fillColor: clubColor,
+      fillOpacity: 0.85,
+      weight: 2
+    }).addTo(mapMarkers);
     marker.bindPopup(`
-      <strong>${club.name}</strong><br />
+      <strong style="color: ${clubColor}">${club.name}</strong><br />
       ${club.location.label}<br />
       <a href="${club.source}" target="_blank" rel="noopener">Source ↗</a>
     `);
@@ -410,21 +610,30 @@ function renderMap(filtered) {
 function setView(view) {
   currentView = view;
   const showingMap = view === "map";
+  const showingCalendar = view === "calendar";
 
-  cardsEl.classList.toggle("hidden", showingMap);
+  cardsEl.classList.toggle("hidden", showingMap || showingCalendar);
   mapEl.classList.toggle("hidden", !showingMap);
-  gridViewBtn.classList.toggle("is-active", !showingMap);
+  calendarEl.classList.toggle("hidden", !showingCalendar);
+  gridViewBtn.classList.toggle("is-active", view === "grid");
   mapViewBtn.classList.toggle("is-active", showingMap);
-  gridViewBtn.setAttribute("aria-pressed", String(!showingMap));
+  calendarViewBtn.classList.toggle("is-active", showingCalendar);
+  gridViewBtn.setAttribute("aria-pressed", String(view === "grid"));
   mapViewBtn.setAttribute("aria-pressed", String(showingMap));
+  calendarViewBtn.setAttribute("aria-pressed", String(showingCalendar));
   mapEl.setAttribute("aria-hidden", String(!showingMap));
-  cardsEl.setAttribute("aria-hidden", String(showingMap));
+  cardsEl.setAttribute("aria-hidden", String(showingMap || showingCalendar));
+  calendarEl.setAttribute("aria-hidden", String(!showingCalendar));
 
   render();
 
   if (showingMap) {
     mapEl.focus();
     setTimeout(() => map?.invalidateSize(), 0);
+  }
+
+  if (showingCalendar) {
+    calendarEl.focus();
   }
 }
 
@@ -460,11 +669,15 @@ function render() {
     .join("");
   cardsEl.setAttribute("role", "list");
 
-  noResultsEl.classList.toggle("hidden", hasResults || currentView === "map");
+  noResultsEl.classList.toggle("hidden", hasResults || currentView === "map" || currentView === "calendar");
   resultsAnnouncer.textContent = hasResults ? resultSummary : "No clubs found. Try broadening your search or resetting filters.";
 
   if (currentView === "map") {
     renderMap(filtered);
+  }
+
+  if (currentView === "calendar") {
+    renderCalendar(filtered);
   }
 }
 
@@ -472,5 +685,6 @@ function render() {
 resetFiltersBtn.addEventListener("click", resetFilters);
 gridViewBtn.addEventListener("click", () => setView("grid"));
 mapViewBtn.addEventListener("click", () => setView("map"));
+calendarViewBtn.addEventListener("click", () => setView("calendar"));
 
 render();
