@@ -11,22 +11,30 @@
       <h1>MileStones</h1>
       <p class="tagline">Your training plans, one stride at a time.</p>
 
-      <section>
-        <h2>Coming Soon</h2>
+      <section class="plan-header">
+        <h2>Pfitz 18/55 Marathon Plan</h2>
         <p>
-          This static site will host running training plans in multiple formats
-          (beginner, 5K, 10K, half-marathon, marathon, and more).
+          Built for runners targeting a marathon using an 18-week build with a
+          55-mile peak. Pick a start date to map every workout to calendar dates,
+          then export the full plan as an iCal file.
         </p>
       </section>
 
+      <section class="planner">
+        <label for="start-date">Plan start date (Week 1 Monday)</label>
+        <div class="planner-controls">
+          <input id="start-date" type="date" />
+          <button id="download-ical" type="button">Download iCal</button>
+        </div>
+        <p id="date-range" class="date-range"></p>
+      </section>
+
       <section>
-        <h2>Initial Scaffold</h2>
-        <ul>
-          <li>Simple static HTML landing page</li>
-          <li>Dedicated stylesheet for easy expansion</li>
-          <li>Clear structure for adding plan pages over time</li>
-        </ul>
+        <h3>18-Week Schedule</h3>
+        <div id="plan-container" class="plan-container"></div>
       </section>
     </main>
+
+    <script src="plan.js"></script>
   </body>
 </html>
