@@ -184,8 +184,11 @@ const clubs = [
     name: "BelRed Run Club",
     neighborhood: "Bellevue / Redmond (Eastside)",
     focus: "Social & Community",
-    days: ["Saturday"],
-    schedule: ["Saturday social run/walk meetups (check current event post for exact time and location)"],
+    days: ["Thursday", "Saturday"],
+    schedule: [
+      "Thursday · 5:30 PM (usually Bellevue, rotates to Redmond sometimes)",
+      "Saturday social run/walk meetups (check current event post for exact time and location)"
+    ],
     source: "https://www.instagram.com/belredrunclub/",
     location: {
       label: "Downtown Bellevue Park (frequent meetup area)",
