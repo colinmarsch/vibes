@@ -83,7 +83,7 @@ const clubs = [
       "Wednesday evening group run",
       "Saturday morning group run"
     ],
-    source: "https://www.meetup.com/greenlake-running-group/",
+    source: "https://www.meetup.com/seattle-greenlake-running-group/",
     location: {
       label: "Green Lake Park",
       lat: 47.6794,
