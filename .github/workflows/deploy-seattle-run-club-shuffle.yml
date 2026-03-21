@@ -35,7 +35,8 @@ jobs:
         run: |
           rm -rf _pages
           mkdir -p _pages
-          cp -R milestones/. _pages/
+          mkdir -p _pages/milestones
+          cp -R milestones/. _pages/milestones/
           mkdir -p _pages/seattle-run-club-shuffle
           cp -R seattle-run-club-shuffle/. _pages/seattle-run-club-shuffle/
 
