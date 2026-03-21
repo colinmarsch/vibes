@@ -241,6 +241,8 @@ const startDateInput = document.getElementById("start-date");
 const dateRangeOutput = document.getElementById("date-range");
 const planContainer = document.getElementById("plan-container");
 const downloadButton = document.getElementById("download-ical");
+const unitInputs = document.querySelectorAll('input[name="distance-unit"]');
+const MILES_TO_KM = 1.60934;
 
 function addDays(date, days) {
   const next = new Date(date);
@@ -274,8 +276,35 @@ function getWorkoutDate(startDate, weekIndex, dayName) {
   return addDays(startDate, weekIndex * 7 + dayOffset);
 }
 
+function getSelectedUnit() {
+  const selected = document.querySelector('input[name="distance-unit"]:checked');
+  return selected ? selected.value : "mi";
+}
+
+function formatDistance(miles, unit = getSelectedUnit()) {
+  if (!miles) {
+    return "—";
+  }
+
+  if (unit === "km") {
+    const kilometers = miles * MILES_TO_KM;
+    return `${Number(kilometers.toFixed(1))} km`;
+  }
+
+  return `${Number(miles.toFixed(1))} mi`;
+}
+
+function formatWeekTotal(totalMiles, unit = getSelectedUnit()) {
+  if (unit === "km") {
+    return `${Number((totalMiles * MILES_TO_KM).toFixed(1))} km`;
+  }
+
+  return `${Number(totalMiles.toFixed(1))} mi`;
+}
+
 function renderPlan() {
   const startDate = parseInputDate(startDateInput.value);
+  const unit = getSelectedUnit();
 
   planContainer.innerHTML = "";
 
@@ -284,7 +313,7 @@ function renderPlan() {
     if (weekIndex === 0) details.open = true;
 
     const summary = document.createElement("summary");
-    summary.textContent = `Week ${week.week} • ${week.totalMiles} mi`;
+    summary.textContent = `Week ${week.week} • ${formatWeekTotal(week.totalMiles, unit)}`;
     details.appendChild(summary);
 
     const table = document.createElement("table");
@@ -294,7 +323,7 @@ function renderPlan() {
         <tr>
           <th>Day</th>
           <th>Workout</th>
-          <th>Miles</th>
+          <th>Distance</th>
           <th>Date</th>
         </tr>
       </thead>
@@ -308,7 +337,7 @@ function renderPlan() {
       tr.innerHTML = `
         <td>${run.day}</td>
         <td>${run.workout}</td>
-        <td>${run.miles}</td>
+        <td>${formatDistance(run.miles, unit)}</td>
         <td>${workoutDate ? formatDate(workoutDate) : "Select a start date"}</td>
       `;
       tbody.appendChild(tr);
@@ -332,6 +361,7 @@ function escapeIcsText(value) {
 
 function buildIcs() {
   const startDate = parseInputDate(startDateInput.value);
+  const unit = getSelectedUnit();
   if (!startDate) {
     window.alert("Please choose a plan start date first.");
     return null;
@@ -349,8 +379,9 @@ function buildIcs() {
     week.runs.forEach((run, runIndex) => {
       const eventDate = getWorkoutDate(startDate, weekIndex, run.day);
       const nextDay = addDays(eventDate, 1);
-      const summary = `W${week.week} ${run.day}: ${run.workout}${run.miles ? ` (${run.miles} mi)` : ""}`;
-      const description = `${run.workout}${run.miles ? ` - ${run.miles} miles` : ""}`;
+      const distanceText = run.miles ? formatDistance(run.miles, unit) : "";
+      const summary = `W${week.week} ${run.day}: ${run.workout}${distanceText ? ` (${distanceText})` : ""}`;
+      const description = `${run.workout}${distanceText ? ` - ${distanceText}` : ""}`;
       const uid = `pfitz-18-55-${week.week}-${runIndex}@milestones`;
 
       lines.push(
@@ -386,6 +417,7 @@ function downloadIcsFile() {
 }
 
 startDateInput.addEventListener("input", renderPlan);
+unitInputs.forEach((input) => input.addEventListener("change", renderPlan));
 downloadButton.addEventListener("click", downloadIcsFile);
 
 renderPlan();
