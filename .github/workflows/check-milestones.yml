@@ -1,0 +1,29 @@
+name: Check MileStones Site
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'milestones/**'
+      - '.github/workflows/check-milestones.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: Build site
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Build with Jekyll
+        uses: actions/jekyll-build-pages@v1
+        with:
+          source: ./milestones
+          destination: ./_site
