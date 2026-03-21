@@ -91,6 +91,34 @@ button:hover {
   font-size: 0.95rem;
 }
 
+.unit-toggle {
+  margin: 0.85rem 0 0;
+  padding: 0.55rem 0.7rem;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  display: flex;
+  gap: 0.9rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.unit-toggle legend {
+  color: #30453a;
+  font-size: 0.9rem;
+  padding: 0 0.2rem;
+}
+
+.unit-toggle label {
+  color: var(--text);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.unit-toggle input {
+  padding: 0;
+}
+
 .plan-container {
   display: grid;
   gap: 0.7rem;
