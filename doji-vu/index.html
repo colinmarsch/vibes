@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Doji Vu</title>
+    <meta
+      name="description"
+      content="Track recurring tasks with names and emoji. See frequency and the last time each thing was done."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app__header">
+        <h1>Doji Vu</h1>
+        <p>
+          Track anything you do on repeat — plants, chores, calls, workouts, and
+          more.
+        </p>
+      </header>
+
+      <section class="card" aria-labelledby="new-item-heading">
+        <h2 id="new-item-heading">Add Something to Track</h2>
+        <form id="item-form" class="form">
+          <label>
+            <span>Name</span>
+            <input
+              id="name"
+              name="name"
+              type="text"
+              placeholder="Water plants"
+              maxlength="80"
+              required
+            />
+          </label>
+          <label>
+            <span>Emoji</span>
+            <input
+              id="emoji"
+              name="emoji"
+              type="text"
+              placeholder="🪴"
+              maxlength="4"
+              required
+            />
+          </label>
+          <button type="submit">Add Tracker</button>
+        </form>
+      </section>
+
+      <section class="card" aria-live="polite">
+        <div class="section-title">
+          <h2>Your Trackers</h2>
+          <button id="clear-all" class="button-secondary" type="button">
+            Clear All
+          </button>
+        </div>
+        <p id="empty-state" class="empty-state">
+          No trackers yet. Add one above to get started.
+        </p>
+        <ul id="items" class="items" aria-label="Tracked items"></ul>
+      </section>
+    </main>
+
+    <template id="item-template">
+      <li class="item">
+        <div class="item__main">
+          <div class="item__label">
+            <span class="item__emoji" aria-hidden="true"></span>
+            <div>
+              <h3 class="item__name"></h3>
+              <p class="item__meta"></p>
+            </div>
+          </div>
+          <div class="item__actions">
+            <button class="log-btn" type="button">Mark Done</button>
+            <button class="button-secondary delete-btn" type="button">
+              Delete
+            </button>
+          </div>
+        </div>
+      </li>
+    </template>
+
+    <script src="app.js" defer></script>
+  </body>
+</html>

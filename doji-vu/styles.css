@@ -1,0 +1,159 @@
+:root {
+  color-scheme: dark;
+  --bg: #0d0f14;
+  --card: #161b22;
+  --text: #f2f4f8;
+  --muted: #abb4c2;
+  --accent: #7ee787;
+  --accent-strong: #2ea043;
+  --border: #2d333b;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+  background: radial-gradient(circle at top, #131a27 0%, var(--bg) 45%);
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.app {
+  width: min(860px, 92vw);
+  margin: 2rem auto 4rem;
+  display: grid;
+  gap: 1rem;
+}
+
+.app__header h1 {
+  margin: 0;
+  font-size: clamp(2rem, 4vw, 3rem);
+}
+
+.app__header p {
+  margin-top: 0.5rem;
+  color: var(--muted);
+  max-width: 60ch;
+}
+
+.card {
+  background: color-mix(in oklab, var(--card) 92%, #ffffff 8%);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1rem;
+}
+
+.form {
+  display: flex;
+  gap: 0.75rem;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+label {
+  display: grid;
+  gap: 0.35rem;
+  min-width: 180px;
+  flex: 1;
+}
+
+input,
+button {
+  font: inherit;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  padding: 0.55rem 0.75rem;
+}
+
+input {
+  background: #0f141b;
+  color: var(--text);
+}
+
+button {
+  cursor: pointer;
+  background: var(--accent-strong);
+  color: white;
+  border-color: color-mix(in oklab, var(--accent-strong), #000 35%);
+  transition: transform 100ms ease, filter 150ms ease;
+}
+
+button:hover {
+  filter: brightness(1.08);
+}
+
+button:active {
+  transform: translateY(1px);
+}
+
+.button-secondary {
+  background: transparent;
+  border-color: var(--border);
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.items {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0;
+  display: grid;
+  gap: 0.75rem;
+}
+
+.item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.75rem;
+  background: #111720;
+}
+
+.item__main {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.item__label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.item__emoji {
+  font-size: 1.75rem;
+}
+
+.item__name {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.item__meta {
+  margin: 0.2rem 0 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.item__actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  color: var(--muted);
+}
+
+.hidden {
+  display: none;
+}
