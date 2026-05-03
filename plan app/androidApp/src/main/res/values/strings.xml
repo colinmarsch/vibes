@@ -3,4 +3,7 @@
     <string name="key_saved">API key saved securely.</string>
     <string name="key_loaded">Existing API key loaded.</string>
     <string name="empty_key_error">Please enter an API key.</string>
+    <string name="create_goal">Create goal</string>
+    <string name="save_goal">Save goal</string>
+    <string name="cancel">Cancel</string>
 </resources>
