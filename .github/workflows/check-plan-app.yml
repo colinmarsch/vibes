@@ -30,6 +30,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
 
       - name: Build Android app
         run: gradle :androidApp:assembleDebug
@@ -53,6 +55,8 @@ jobs:
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.10.2'
 
-      - name: Build iOS framework
-        run: gradle :shared:linkDebugFrameworkIosSimulatorArm64
+      - name: Build iOS frameworks
+        run: gradle :shared:linkDebugFrameworkIosSimulatorArm64 :shared:linkDebugFrameworkIosX64
