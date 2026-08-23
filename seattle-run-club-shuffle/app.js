@@ -3,6 +3,7 @@ const FOCUS_CATEGORIES = [
   "Training & Performance",
   "Inclusive & Identity-Based",
   "Trail Running",
+  "Slow Running",
   "Free Weekly 5K"
 ];
 
@@ -88,6 +89,22 @@ const clubs = [
       label: "Green Lake Park",
       lat: 47.6794,
       lng: -122.3417
+    }
+  },
+  {
+    name: "Plod Squad",
+    neighborhood: "North Seattle",
+    focus: "Slow Running",
+    days: ["Tuesday"],
+    schedule: [
+      "Tuesday · 6:15 PM slow run",
+      "Some weekend runs as announced (check Instagram for details)"
+    ],
+    source: "https://www.instagram.com/plodsquadofficial/",
+    location: {
+      label: "Jellyfish Brewing (Green Lake)",
+      lat: 47.678179,
+      lng: -122.327615
     }
   },
   {
