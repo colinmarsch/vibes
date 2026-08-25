@@ -1,35 +1,59 @@
 const STORAGE_KEY = "pot-odds-trainer-stats-v1";
 const {
   createQuestion,
+  createEquityQuestion,
   isAnswerCorrect,
   roundEquityForDisplay,
   formatMoney,
-} = window.PotOddsLogic;
+  parseCard,
+} = window.PokerMathLogic;
 
 const elements = {
   form: document.querySelector("#answer-form"),
-  answer: document.querySelector("#answer"),
+  potOddsAnswer: document.querySelector("#pot-odds-answer"),
+  potQuestionLegend: document.querySelector("#pot-question-legend"),
+  handEquityAnswer: document.querySelector("#hand-equity-answer"),
+  actionInputs: [...document.querySelectorAll('input[name="action"]')],
+  equityQuestion: document.querySelector("#equity-question"),
+  actionQuestion: document.querySelector("#action-question"),
+  submitButton: document.querySelector(".submit-button"),
   bet: document.querySelector("#bet-amount"),
   pot: document.querySelector("#pot-amount"),
+  spotLabel: document.querySelector("#spot-label"),
+  streetPill: document.querySelector("#street-pill"),
+  handContext: document.querySelector("#hand-context"),
+  heroCards: document.querySelector("#hero-cards"),
+  boardCards: document.querySelector("#board-cards"),
+  drawOuts: document.querySelector("#draw-outs"),
+  drawName: document.querySelector("#draw-name"),
   feedback: document.querySelector("#feedback"),
   feedbackIcon: document.querySelector("#feedback-icon"),
   feedbackKicker: document.querySelector("#feedback-kicker"),
   feedbackTitle: document.querySelector("#feedback-title"),
-  feedbackExplanation: document.querySelector("#feedback-explanation"),
-  calcCall: document.querySelector("#calc-call"),
-  calcFinalPot: document.querySelector("#calc-final-pot"),
-  calcEquity: document.querySelector("#calc-equity"),
+  resultGrid: document.querySelector("#result-grid"),
+  resultPotOdds: document.querySelector("#result-pot-odds"),
+  resultPotStatus: document.querySelector("#result-pot-status"),
+  resultHandCard: document.querySelector("#result-hand-card"),
+  resultHandEquity: document.querySelector("#result-hand-equity"),
+  resultHandStatus: document.querySelector("#result-hand-status"),
+  resultActionCard: document.querySelector("#result-action-card"),
+  resultAction: document.querySelector("#result-action"),
+  resultActionStatus: document.querySelector("#result-action-status"),
+  potCalculation: document.querySelector("#pot-calculation"),
+  equityCalculation: document.querySelector("#equity-calculation"),
+  decisionCalculation: document.querySelector("#decision-calculation"),
   next: document.querySelector("#next-question"),
   accuracy: document.querySelector("#accuracy-stat"),
   accuracyDetail: document.querySelector("#accuracy-detail"),
   streak: document.querySelector("#streak-stat"),
   best: document.querySelector("#best-stat"),
   reset: document.querySelector("#reset-stats"),
-  tolerance: document.querySelector("#tolerance-copy"),
+  modeButtons: [...document.querySelectorAll("[data-mode]")],
   difficultyButtons: [...document.querySelectorAll("[data-difficulty]")],
 };
 
 const state = {
+  mode: "pot-odds",
   difficulty: "standard",
   question: null,
   answered: false,
@@ -66,47 +90,102 @@ function renderStats() {
   const { correct, total, streak, best } = state.stats;
   elements.accuracy.textContent = total ? `${Math.round((correct / total) * 100)}%` : "—";
   elements.accuracyDetail.textContent = total
-    ? `${correct} of ${total} correct`
+    ? `${correct} of ${total} rounds perfect`
     : "No answers yet";
   elements.streak.textContent = streak;
   elements.best.textContent = best;
 }
 
+function renderCards(container, cards) {
+  container.replaceChildren();
+
+  cards.forEach((cardCode) => {
+    const card = parseCard(cardCode);
+    const cardElement = document.createElement("span");
+    cardElement.className = `playing-card${card.isRed ? " playing-card--red" : ""}`;
+    cardElement.setAttribute("aria-label", `${card.rank} of ${card.suitName}`);
+
+    const rank = document.createElement("strong");
+    rank.textContent = card.rank;
+    const suit = document.createElement("span");
+    suit.textContent = card.suitSymbol;
+    suit.setAttribute("aria-hidden", "true");
+
+    cardElement.append(rank, suit);
+    container.append(cardElement);
+  });
+}
+
+function setInputsDisabled(disabled) {
+  elements.potOddsAnswer.disabled = disabled;
+  elements.handEquityAnswer.disabled = disabled;
+  elements.actionInputs.forEach((input) => {
+    input.disabled = disabled;
+  });
+}
+
 function startQuestion() {
-  state.question = createQuestion(state.difficulty);
+  const isEquityMode = state.mode === "equity";
+  state.question = isEquityMode
+    ? createEquityQuestion(state.difficulty)
+    : createQuestion(state.difficulty);
   state.answered = false;
 
   elements.pot.textContent = formatMoney(state.question.pot);
   elements.bet.textContent = formatMoney(state.question.bet);
-  elements.tolerance.textContent = state.question.tolerance.toFixed(1);
-  elements.answer.value = "";
-  elements.answer.disabled = false;
+  elements.spotLabel.textContent = isEquityMode ? "Equity + decision drill" : "Pot odds drill";
+  elements.handContext.hidden = !isEquityMode;
+  elements.streetPill.hidden = !isEquityMode;
+  elements.equityQuestion.hidden = !isEquityMode;
+  elements.actionQuestion.hidden = !isEquityMode;
+  elements.resultHandCard.hidden = !isEquityMode;
+  elements.resultActionCard.hidden = !isEquityMode;
+  elements.equityCalculation.hidden = !isEquityMode;
+  elements.decisionCalculation.hidden = !isEquityMode;
+  elements.resultGrid.classList.toggle("result-grid--single", !isEquityMode);
+  elements.form.classList.toggle("answer-form--single", !isEquityMode);
+  elements.potQuestionLegend.textContent = isEquityMode
+    ? "1. What equity do you need to call?"
+    : "What equity do you need to call?";
+
+  if (isEquityMode) {
+    elements.streetPill.textContent = state.question.street;
+    elements.drawOuts.textContent = `${state.question.outs} outs`;
+    elements.drawName.textContent = state.question.drawName;
+    renderCards(elements.heroCards, state.question.hero);
+    renderCards(elements.boardCards, state.question.board);
+  }
+
+  elements.potOddsAnswer.value = "";
+  elements.handEquityAnswer.value = "";
+  elements.actionInputs.forEach((input) => {
+    input.checked = false;
+  });
+  setInputsDisabled(false);
+  elements.submitButton.textContent = isEquityMode ? "Check all three" : "Check answer";
   elements.feedback.hidden = true;
-  elements.form.querySelector("button").disabled = false;
-  elements.answer.focus();
+  elements.potOddsAnswer.focus();
 }
 
-function submitAnswer() {
-  if (state.answered) {
-    startQuestion();
-    return;
-  }
-
-  const answer = Number.parseFloat(elements.answer.value);
+function readPercentage(input, message) {
+  const answer = Number.parseFloat(input.value);
   if (!Number.isFinite(answer) || answer < 0 || answer > 100) {
-    elements.answer.setCustomValidity("Enter a percentage between 0 and 100.");
-    elements.answer.reportValidity();
-    return;
+    input.setCustomValidity(message);
+    input.reportValidity();
+    return null;
   }
 
-  elements.answer.setCustomValidity("");
-  const { pot, bet, equity, tolerance } = state.question;
-  const displayedEquity = roundEquityForDisplay(equity);
-  const correct = isAnswerCorrect(answer, displayedEquity, tolerance);
-  const finalPot = pot + bet + bet;
-  const roundedEquity = displayedEquity.toFixed(1).replace(".0", "");
+  input.setCustomValidity("");
+  return answer;
+}
 
-  state.answered = true;
+function setResultStatus(element, correct) {
+  element.textContent = correct ? "Correct" : "Needs work";
+  element.classList.toggle("is-correct", correct);
+  element.classList.toggle("is-incorrect", !correct);
+}
+
+function recordRound(correct) {
   state.stats.total += 1;
 
   if (correct) {
@@ -119,19 +198,102 @@ function submitAnswer() {
 
   saveStats();
   renderStats();
+}
 
-  elements.answer.disabled = true;
-  elements.form.querySelector("button").disabled = true;
+function submitAnswer() {
+  if (state.answered) {
+    startQuestion();
+    return;
+  }
+
+  const potAnswer = readPercentage(
+    elements.potOddsAnswer,
+    "Enter a required equity percentage between 0 and 100."
+  );
+  if (potAnswer === null) return;
+
+  const isEquityMode = state.mode === "equity";
+  let handAnswer = null;
+  let selectedAction = null;
+
+  if (isEquityMode) {
+    handAnswer = readPercentage(
+      elements.handEquityAnswer,
+      "Enter a draw equity percentage between 0 and 100."
+    );
+    if (handAnswer === null) return;
+
+    selectedAction = elements.actionInputs.find((input) => input.checked)?.value;
+    if (!selectedAction) {
+      elements.actionInputs[0].setCustomValidity("Choose call or fold.");
+      elements.actionInputs[0].reportValidity();
+      return;
+    }
+    elements.actionInputs[0].setCustomValidity("");
+  }
+
+  const requiredEquity = state.question.requiredEquity ?? state.question.equity;
+  const displayedPotOdds = roundEquityForDisplay(requiredEquity);
+  const potCorrect = isAnswerCorrect(
+    potAnswer,
+    displayedPotOdds,
+    state.question.tolerance
+  );
+
+  let handCorrect = true;
+  let actionCorrect = true;
+  let displayedHandEquity = null;
+
+  if (isEquityMode) {
+    displayedHandEquity = roundEquityForDisplay(state.question.handEquity);
+    handCorrect = isAnswerCorrect(
+      handAnswer,
+      displayedHandEquity,
+      state.question.tolerance
+    );
+    actionCorrect = selectedAction === state.question.action;
+  }
+
+  const correct = potCorrect && handCorrect && actionCorrect;
+  const finalPot = state.question.pot + state.question.bet * 2;
+  const roundedPotOdds = displayedPotOdds.toFixed(1).replace(".0", "");
+
+  state.answered = true;
+  recordRound(correct);
+  setInputsDisabled(true);
+  elements.submitButton.textContent = "Next question";
+
   elements.feedback.classList.toggle("feedback--incorrect", !correct);
   elements.feedbackIcon.textContent = correct ? "✓" : "×";
-  elements.feedbackKicker.textContent = correct ? "Correct" : "Not quite";
-  elements.feedbackTitle.textContent = `You need ${roundedEquity}% equity.`;
-  elements.calcCall.textContent = formatMoney(bet);
-  elements.calcFinalPot.textContent = formatMoney(finalPot);
-  elements.calcEquity.textContent = `${roundedEquity}%`;
-  elements.feedbackExplanation.textContent = `${formatMoney(pot)} in the pot + ${formatMoney(
-    bet
-  )} bet + your ${formatMoney(bet)} call = ${formatMoney(finalPot)}. Your call is ${roundedEquity}% of that final pot.`;
+  elements.feedbackKicker.textContent = correct ? "Perfect round" : "Review the math";
+  elements.feedbackTitle.textContent = isEquityMode
+    ? correct
+      ? `${state.question.action === "call" ? "Call" : "Fold"} is the profitable play.`
+      : "Compare the two percentages."
+    : `You need ${roundedPotOdds}% equity.`;
+
+  elements.resultPotOdds.textContent = `${roundedPotOdds}%`;
+  setResultStatus(elements.resultPotStatus, potCorrect);
+  elements.potCalculation.textContent =
+    `Pot odds: ${formatMoney(state.question.bet)} call ÷ ${formatMoney(finalPot)} final pot = ${roundedPotOdds}% required equity.`;
+
+  if (isEquityMode) {
+    const roundedHandEquity = displayedHandEquity.toFixed(1).replace(".0", "");
+    const actionLabel = state.question.action === "call" ? "Call" : "Fold";
+    const comparison = state.question.handEquity >= requiredEquity ? "higher than" : "lower than";
+
+    elements.resultHandEquity.textContent = `${roundedHandEquity}%`;
+    elements.resultAction.textContent = actionLabel;
+    setResultStatus(elements.resultHandStatus, handCorrect);
+    setResultStatus(elements.resultActionStatus, actionCorrect);
+
+    elements.equityCalculation.textContent = state.question.cardsToCome === 1
+      ? `Draw equity: ${state.question.outs} outs ÷ 46 unseen cards = ${roundedHandEquity}%. ${state.question.explanation}`
+      : `Draw equity: 1 − ((47 − ${state.question.outs}) ÷ 47 × (46 − ${state.question.outs}) ÷ 46) = ${roundedHandEquity}%. ${state.question.explanation}`;
+    elements.decisionCalculation.textContent =
+      `Decision: ${roundedHandEquity}% draw equity is ${comparison} ${roundedPotOdds}% required equity, so ${actionLabel.toLowerCase()}.`;
+  }
+
   elements.feedback.hidden = false;
   elements.next.focus();
 }
@@ -143,8 +305,28 @@ elements.form.addEventListener("submit", (event) => {
 
 elements.next.addEventListener("click", startQuestion);
 
-elements.answer.addEventListener("input", () => {
-  elements.answer.setCustomValidity("");
+[elements.potOddsAnswer, elements.handEquityAnswer].forEach((input) => {
+  input.addEventListener("input", () => {
+    input.setCustomValidity("");
+  });
+});
+
+elements.actionInputs.forEach((input) => {
+  input.addEventListener("change", () => {
+    elements.actionInputs[0].setCustomValidity("");
+  });
+});
+
+elements.modeButtons.forEach((button) => {
+  button.addEventListener("click", () => {
+    state.mode = button.dataset.mode;
+    elements.modeButtons.forEach((candidate) => {
+      const active = candidate === button;
+      candidate.classList.toggle("is-active", active);
+      candidate.setAttribute("aria-pressed", String(active));
+    });
+    startQuestion();
+  });
 });
 
 elements.difficultyButtons.forEach((button) => {
@@ -161,6 +343,10 @@ elements.reset.addEventListener("click", () => {
   state.stats = { correct: 0, total: 0, streak: 0, best: 0 };
   saveStats();
   renderStats();
+});
+
+elements.modeButtons.forEach((button) => {
+  button.setAttribute("aria-pressed", String(button.classList.contains("is-active")));
 });
 
 renderStats();
