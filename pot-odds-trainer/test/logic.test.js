@@ -18,6 +18,24 @@ function seededRandom(seed) {
   };
 }
 
+function straightState(cards) {
+  const ranks = new Set(cards.map((card) => card.slice(0, -1)));
+  const rankOrder = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
+  const windows = [
+    ["A", "2", "3", "4", "5"],
+    ...Array.from({ length: 9 }, (_unused, index) => rankOrder.slice(index, index + 5)),
+  ];
+  const made = windows.some((window) => window.every((rank) => ranks.has(rank)));
+  const outs = rankOrder.filter(
+    (candidate) =>
+      !ranks.has(candidate) &&
+      windows.some((window) =>
+        window.includes(candidate) && window.every((rank) => rank === candidate || ranks.has(rank))
+      )
+  );
+  return { made, outs };
+}
+
 test("calculates required equity from the final pot after calling", () => {
   assert.equal(calculateRequiredEquity(100, 50), 25);
   assert.equal(calculateRequiredEquity(60, 30), 25);
@@ -79,6 +97,16 @@ test("random equity questions contain unique valid cards and correct math", () =
       assert.equal(question.cardsToCome, question.street === "Flop" ? 2 : 1);
       assert.equal(question.handEquity, calculateDrawEquity(question.outs, question.cardsToCome));
       assert.equal(question.action, question.handEquity >= question.requiredEquity ? "call" : "fold");
+
+      const straight = straightState(cards);
+      assert.equal(straight.made, false);
+      if (question.drawName.includes("Open-ended") || question.drawName.includes("combo")) {
+        assert.equal(straight.outs.length, 2);
+      } else if (question.drawName.includes("Gutshot")) {
+        assert.equal(straight.outs.length, 1);
+      } else {
+        assert.equal(straight.outs.length, 0);
+      }
     }
   }
 });
