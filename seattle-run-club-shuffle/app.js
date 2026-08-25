@@ -108,6 +108,22 @@ const clubs = [
     }
   },
   {
+    name: "Frelard Run Club",
+    neighborhood: "Fremont / Ballard",
+    focus: "Social & Community",
+    days: ["Thursday"],
+    schedule: [
+      "Thursday · 6:00 PM social run",
+      "Thursday · 6:45 PM social run"
+    ],
+    source: "https://share.google/7fNGcfYcbkNvSiMh9",
+    location: {
+      label: "Ballard / Fremont breweries (rotating)",
+      lat: 47.6575,
+      lng: -122.3654
+    }
+  },
+  {
     name: "Seattle Running Club",
     neighborhood: "Central Seattle",
     focus: "Training & Performance",
