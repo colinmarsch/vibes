@@ -12,9 +12,11 @@ const elements = {
   form: document.querySelector("#answer-form"),
   potOddsAnswer: document.querySelector("#pot-odds-answer"),
   potQuestionLegend: document.querySelector("#pot-question-legend"),
+  outsAnswer: document.querySelector("#outs-answer"),
   handEquityAnswer: document.querySelector("#hand-equity-answer"),
   actionInputs: [...document.querySelectorAll('input[name="action"]')],
   equityQuestion: document.querySelector("#equity-question"),
+  outsQuestion: document.querySelector("#outs-question"),
   actionQuestion: document.querySelector("#action-question"),
   submitButton: document.querySelector(".submit-button"),
   bet: document.querySelector("#bet-amount"),
@@ -24,8 +26,6 @@ const elements = {
   handContext: document.querySelector("#hand-context"),
   heroCards: document.querySelector("#hero-cards"),
   boardCards: document.querySelector("#board-cards"),
-  drawOuts: document.querySelector("#draw-outs"),
-  drawName: document.querySelector("#draw-name"),
   feedback: document.querySelector("#feedback"),
   feedbackIcon: document.querySelector("#feedback-icon"),
   feedbackKicker: document.querySelector("#feedback-kicker"),
@@ -36,6 +36,10 @@ const elements = {
   resultHandCard: document.querySelector("#result-hand-card"),
   resultHandEquity: document.querySelector("#result-hand-equity"),
   resultHandStatus: document.querySelector("#result-hand-status"),
+  resultOutsCard: document.querySelector("#result-outs-card"),
+  resultDrawName: document.querySelector("#result-draw-name"),
+  resultOuts: document.querySelector("#result-outs"),
+  resultOutsStatus: document.querySelector("#result-outs-status"),
   resultActionCard: document.querySelector("#result-action-card"),
   resultAction: document.querySelector("#result-action"),
   resultActionStatus: document.querySelector("#result-action-status"),
@@ -118,6 +122,7 @@ function renderCards(container, cards) {
 
 function setInputsDisabled(disabled) {
   elements.potOddsAnswer.disabled = disabled;
+  elements.outsAnswer.disabled = disabled;
   elements.handEquityAnswer.disabled = disabled;
   elements.actionInputs.forEach((input) => {
     input.disabled = disabled;
@@ -137,8 +142,10 @@ function startQuestion() {
   elements.handContext.hidden = !isEquityMode;
   elements.streetPill.hidden = !isEquityMode;
   elements.equityQuestion.hidden = !isEquityMode;
+  elements.outsQuestion.hidden = !isEquityMode;
   elements.actionQuestion.hidden = !isEquityMode;
   elements.resultHandCard.hidden = !isEquityMode;
+  elements.resultOutsCard.hidden = !isEquityMode;
   elements.resultActionCard.hidden = !isEquityMode;
   elements.equityCalculation.hidden = !isEquityMode;
   elements.decisionCalculation.hidden = !isEquityMode;
@@ -150,19 +157,18 @@ function startQuestion() {
 
   if (isEquityMode) {
     elements.streetPill.textContent = state.question.street;
-    elements.drawOuts.textContent = `${state.question.outs} outs`;
-    elements.drawName.textContent = state.question.drawName;
     renderCards(elements.heroCards, state.question.hero);
     renderCards(elements.boardCards, state.question.board);
   }
 
   elements.potOddsAnswer.value = "";
+  elements.outsAnswer.value = "";
   elements.handEquityAnswer.value = "";
   elements.actionInputs.forEach((input) => {
     input.checked = false;
   });
   setInputsDisabled(false);
-  elements.submitButton.textContent = isEquityMode ? "Check all three" : "Check answer";
+  elements.submitButton.textContent = isEquityMode ? "Check all four" : "Check answer";
   elements.feedback.hidden = true;
   elements.potOddsAnswer.focus();
 }
@@ -176,6 +182,18 @@ function readPercentage(input, message) {
   }
 
   input.setCustomValidity("");
+  return answer;
+}
+
+function readOuts() {
+  const answer = Number(elements.outsAnswer.value);
+  if (!Number.isInteger(answer) || answer < 0 || answer > 46) {
+    elements.outsAnswer.setCustomValidity("Enter a whole number of outs between 0 and 46.");
+    elements.outsAnswer.reportValidity();
+    return null;
+  }
+
+  elements.outsAnswer.setCustomValidity("");
   return answer;
 }
 
@@ -214,9 +232,13 @@ function submitAnswer() {
 
   const isEquityMode = state.mode === "equity";
   let handAnswer = null;
+  let outsAnswer = null;
   let selectedAction = null;
 
   if (isEquityMode) {
+    outsAnswer = readOuts();
+    if (outsAnswer === null) return;
+
     handAnswer = readPercentage(
       elements.handEquityAnswer,
       "Enter a draw equity percentage between 0 and 100."
@@ -241,10 +263,12 @@ function submitAnswer() {
   );
 
   let handCorrect = true;
+  let outsCorrect = true;
   let actionCorrect = true;
   let displayedHandEquity = null;
 
   if (isEquityMode) {
+    outsCorrect = outsAnswer === state.question.outs;
     displayedHandEquity = roundEquityForDisplay(state.question.handEquity);
     handCorrect = isAnswerCorrect(
       handAnswer,
@@ -254,7 +278,7 @@ function submitAnswer() {
     actionCorrect = selectedAction === state.question.action;
   }
 
-  const correct = potCorrect && handCorrect && actionCorrect;
+  const correct = potCorrect && outsCorrect && handCorrect && actionCorrect;
   const finalPot = state.question.pot + state.question.bet * 2;
   const roundedPotOdds = displayedPotOdds.toFixed(1).replace(".0", "");
 
@@ -283,8 +307,11 @@ function submitAnswer() {
     const comparison = state.question.handEquity >= requiredEquity ? "higher than" : "lower than";
 
     elements.resultHandEquity.textContent = `${roundedHandEquity}%`;
+    elements.resultDrawName.textContent = state.question.drawName;
+    elements.resultOuts.textContent = `${state.question.outs} outs`;
     elements.resultAction.textContent = actionLabel;
     setResultStatus(elements.resultHandStatus, handCorrect);
+    setResultStatus(elements.resultOutsStatus, outsCorrect);
     setResultStatus(elements.resultActionStatus, actionCorrect);
 
     elements.equityCalculation.textContent = state.question.cardsToCome === 1
@@ -305,7 +332,7 @@ elements.form.addEventListener("submit", (event) => {
 
 elements.next.addEventListener("click", startQuestion);
 
-[elements.potOddsAnswer, elements.handEquityAnswer].forEach((input) => {
+[elements.potOddsAnswer, elements.outsAnswer, elements.handEquityAnswer].forEach((input) => {
   input.addEventListener("input", () => {
     input.setCustomValidity("");
   });
