@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A free, unlimited trainer for making poker pot odds calculations automatic."
+    />
+    <meta name="theme-color" content="#07120f" />
+    <title>Pot Odds Trainer</title>
+    <link rel="icon" href="favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="ambient ambient--one" aria-hidden="true"></div>
+    <div class="ambient ambient--two" aria-hidden="true"></div>
+
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="." aria-label="Pot Odds Trainer home">
+          <span class="brand__mark" aria-hidden="true">%</span>
+          <span>Pot Odds Trainer</span>
+        </a>
+        <p class="free-pill"><span aria-hidden="true"></span> Free forever</p>
+      </header>
+
+      <section class="intro" aria-labelledby="page-title">
+        <p class="eyebrow">Poker math, made automatic</p>
+        <h1 id="page-title">Know your price.<br /><em>Make the right call.</em></h1>
+        <p class="intro__copy">
+          Drill the break-even equity you need when facing a bet. No account,
+          no limits, no paywall.
+        </p>
+      </section>
+
+      <section class="trainer" aria-label="Pot odds practice round">
+        <div class="trainer__topline">
+          <div class="difficulty" aria-label="Difficulty">
+            <button class="difficulty__button" type="button" data-difficulty="easy">Easy</button>
+            <button class="difficulty__button is-active" type="button" data-difficulty="standard">Standard</button>
+            <button class="difficulty__button" type="button" data-difficulty="hard">Hard</button>
+          </div>
+          <button class="reset-button" id="reset-stats" type="button">Reset stats</button>
+        </div>
+
+        <div class="table-spot">
+          <p class="table-spot__label">Your decision</p>
+          <h2>Villain bets <strong id="bet-amount">$50</strong> into a <strong id="pot-amount">$100</strong> pot.</h2>
+          <p>What is the minimum equity you need to call?</p>
+
+          <form id="answer-form" class="answer-form" novalidate>
+            <label for="answer" class="sr-only">Required equity percentage</label>
+            <div class="answer-control">
+              <input
+                id="answer"
+                name="answer"
+                type="number"
+                inputmode="decimal"
+                min="0"
+                max="100"
+                step="0.1"
+                placeholder="0.0"
+                autocomplete="off"
+                aria-describedby="answer-help"
+                required
+              />
+              <span aria-hidden="true">%</span>
+            </div>
+            <button class="primary-button" type="submit">Check answer</button>
+          </form>
+          <p id="answer-help" class="microcopy">Answers within <span id="tolerance-copy">0.5</span>% count as correct.</p>
+        </div>
+
+        <div id="feedback" class="feedback" aria-live="polite" hidden>
+          <div class="feedback__heading">
+            <span id="feedback-icon" class="feedback__icon" aria-hidden="true">✓</span>
+            <div>
+              <p id="feedback-kicker">Correct</p>
+              <h3 id="feedback-title">You need 25% equity.</h3>
+            </div>
+          </div>
+
+          <div class="equation" aria-label="Calculation breakdown">
+            <div>
+              <span>Call</span>
+              <strong id="calc-call">$50</strong>
+            </div>
+            <span class="equation__operator">÷</span>
+            <div>
+              <span>Final pot</span>
+              <strong id="calc-final-pot">$200</strong>
+            </div>
+            <span class="equation__operator">=</span>
+            <div class="equation__answer">
+              <span>Required</span>
+              <strong id="calc-equity">25%</strong>
+            </div>
+          </div>
+
+          <p id="feedback-explanation" class="feedback__explanation"></p>
+          <button id="next-question" class="primary-button primary-button--wide" type="button">
+            Next question <span aria-hidden="true">→</span>
+          </button>
+        </div>
+      </section>
+
+      <section class="scoreboard" aria-label="Practice statistics">
+        <article>
+          <p>Accuracy</p>
+          <strong id="accuracy-stat">—</strong>
+          <span id="accuracy-detail">No answers yet</span>
+        </article>
+        <article>
+          <p>Current streak</p>
+          <strong id="streak-stat">0</strong>
+          <span>Keep it rolling</span>
+        </article>
+        <article>
+          <p>Best streak</p>
+          <strong id="best-stat">0</strong>
+          <span>Saved on this device</span>
+        </article>
+      </section>
+
+      <section class="lesson" aria-labelledby="lesson-title">
+        <div>
+          <p class="eyebrow">The one formula</p>
+          <h2 id="lesson-title">Call ÷ final pot</h2>
+        </div>
+        <div class="lesson__content">
+          <p>
+            Add the starting pot, your opponent's bet, and your call. Then divide
+            the amount you call by that final pot.
+          </p>
+          <div class="formula">
+            <span>Required equity</span>
+            <strong>call ÷ (pot + bet + call)</strong>
+          </div>
+          <p class="lesson__tip">
+            <strong>At the table:</strong> if the pot is $100 and the bet is $50,
+            you call $50 to play for a final pot of $200. That means you need 25%.
+          </p>
+        </div>
+      </section>
+
+      <footer>
+        <p>Built for repetition, not subscriptions.</p>
+        <p><kbd>Enter</kbd> checks your answer and moves to the next spot.</p>
+      </footer>
+    </main>
+
+    <script src="logic.js"></script>
+    <script src="app.js" defer></script>
+  </body>
+</html>
