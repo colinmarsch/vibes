@@ -1,5 +1,10 @@
 const STORAGE_KEY = "pot-odds-trainer-stats-v1";
-const { DIFFICULTIES, createQuestion, isAnswerCorrect, formatMoney } = window.PotOddsLogic;
+const {
+  createQuestion,
+  isAnswerCorrect,
+  roundEquityForDisplay,
+  formatMoney,
+} = window.PotOddsLogic;
 
 const elements = {
   form: document.querySelector("#answer-form"),
@@ -50,7 +55,11 @@ function loadStats() {
 }
 
 function saveStats() {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state.stats));
+  try {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state.stats));
+  } catch {
+    // Practice should remain usable when storage is blocked or unavailable.
+  }
 }
 
 function renderStats() {
@@ -92,9 +101,10 @@ function submitAnswer() {
 
   elements.answer.setCustomValidity("");
   const { pot, bet, equity, tolerance } = state.question;
-  const correct = isAnswerCorrect(answer, equity, tolerance);
+  const displayedEquity = roundEquityForDisplay(equity);
+  const correct = isAnswerCorrect(answer, displayedEquity, tolerance);
   const finalPot = pot + bet + bet;
-  const roundedEquity = equity.toFixed(1).replace(".0", "");
+  const roundedEquity = displayedEquity.toFixed(1).replace(".0", "");
 
   state.answered = true;
   state.stats.total += 1;
@@ -151,13 +161,6 @@ elements.reset.addEventListener("click", () => {
   state.stats = { correct: 0, total: 0, streak: 0, best: 0 };
   saveStats();
   renderStats();
-});
-
-document.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" && state.answered) {
-    event.preventDefault();
-    startQuestion();
-  }
 });
 
 renderStats();

@@ -40,6 +40,10 @@
     return Number.isFinite(answer) && Math.abs(answer - equity) <= tolerance;
   }
 
+  function roundEquityForDisplay(equity) {
+    return Number(equity.toFixed(1));
+  }
+
   function formatMoney(amount) {
     return `$${amount.toLocaleString("en-US")}`;
   }
@@ -49,6 +53,7 @@
     calculateRequiredEquity,
     createQuestion,
     isAnswerCorrect,
+    roundEquityForDisplay,
     formatMoney,
   };
 
