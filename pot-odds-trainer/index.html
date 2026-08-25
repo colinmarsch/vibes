@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="A free, unlimited trainer for making poker pot odds calculations automatic."
+      content="Free poker math drills for pot odds, draw equity, and profitable call-or-fold decisions."
     />
     <meta name="theme-color" content="#07120f" />
-    <title>Pot Odds Trainer</title>
+    <title>Poker Math Lab — Pot Odds & Equity Trainer</title>
     <link rel="icon" href="favicon.svg" type="image/svg+xml" />
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -18,23 +18,38 @@
 
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="." aria-label="Pot Odds Trainer home">
-          <span class="brand__mark" aria-hidden="true">%</span>
-          <span>Pot Odds Trainer</span>
+        <a class="brand" href="." aria-label="Poker Math Lab home">
+          <span class="brand__mark" aria-hidden="true">♠</span>
+          <span>Poker Math Lab</span>
         </a>
         <p class="free-pill"><span aria-hidden="true"></span> Free forever</p>
       </header>
 
       <section class="intro" aria-labelledby="page-title">
-        <p class="eyebrow">Poker math, made automatic</p>
-        <h1 id="page-title">Know your price.<br /><em>Make the right call.</em></h1>
+        <div>
+          <p class="eyebrow">Build your poker math instincts</p>
+          <h1 id="page-title">Calculate the edge.<br /><em>Choose the play.</em></h1>
+        </div>
         <p class="intro__copy">
-          Drill the break-even equity you need when facing a bet. No account,
-          no limits, no paywall.
+          Practice pot odds on their own, then combine them with draw equity to
+          decide whether a call is profitable.
         </p>
       </section>
 
-      <section class="trainer" aria-label="Pot odds practice round">
+      <nav class="mode-tabs" aria-label="Training mode">
+        <button class="mode-tab is-active" type="button" data-mode="pot-odds">
+          <span>01</span>
+          <strong>Pot odds</strong>
+          <small>Find the price to call</small>
+        </button>
+        <button class="mode-tab" type="button" data-mode="equity">
+          <span>02</span>
+          <strong>Equity + decision</strong>
+          <small>Compare your draw to the price</small>
+        </button>
+      </nav>
+
+      <section class="trainer" aria-label="Poker math practice round">
         <div class="trainer__topline">
           <div class="difficulty" aria-label="Difficulty">
             <button class="difficulty__button" type="button" data-difficulty="easy">Easy</button>
@@ -45,31 +60,88 @@
         </div>
 
         <div class="table-spot">
-          <p class="table-spot__label">Your decision</p>
-          <h2>Villain bets <strong id="bet-amount">$50</strong> into a <strong id="pot-amount">$100</strong> pot.</h2>
-          <p>What is the minimum equity you need to call?</p>
+          <div class="spot-heading">
+            <div>
+              <p class="table-spot__label" id="spot-label">Pot odds drill</p>
+              <h2>Villain bets <strong id="bet-amount">$50</strong> into a <strong id="pot-amount">$100</strong> pot.</h2>
+            </div>
+            <span class="street-pill" id="street-pill" hidden>Flop</span>
+          </div>
+
+          <div id="hand-context" class="hand-context" hidden>
+            <div class="card-group">
+              <p>Your hand</p>
+              <div id="hero-cards" class="cards" aria-label="Your hole cards"></div>
+            </div>
+            <div class="card-group">
+              <p>Board</p>
+              <div id="board-cards" class="cards" aria-label="Community cards"></div>
+            </div>
+            <div class="draw-badge">
+              <span id="draw-outs">9 outs</span>
+              <strong id="draw-name">Flush draw</strong>
+            </div>
+          </div>
 
           <form id="answer-form" class="answer-form" novalidate>
-            <label for="answer" class="sr-only">Required equity percentage</label>
-            <div class="answer-control">
-              <input
-                id="answer"
-                name="answer"
-                type="number"
-                inputmode="decimal"
-                min="0"
-                max="100"
-                step="0.1"
-                placeholder="0.0"
-                autocomplete="off"
-                aria-describedby="answer-help"
-                required
-              />
-              <span aria-hidden="true">%</span>
-            </div>
-            <button class="primary-button" type="submit">Check answer</button>
+            <fieldset class="question-field">
+              <legend id="pot-question-legend">What equity do you need to call?</legend>
+              <label for="pot-odds-answer" class="sr-only">Required equity percentage</label>
+              <div class="answer-control">
+                <input
+                  id="pot-odds-answer"
+                  name="pot-odds-answer"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="0.0"
+                  autocomplete="off"
+                  required
+                />
+                <span aria-hidden="true">%</span>
+              </div>
+            </fieldset>
+
+            <fieldset class="question-field equity-question" id="equity-question" hidden>
+              <legend>2. What is your chance to hit?</legend>
+              <label for="hand-equity-answer" class="sr-only">Hand equity percentage</label>
+              <div class="answer-control">
+                <input
+                  id="hand-equity-answer"
+                  name="hand-equity-answer"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  max="100"
+                  step="0.1"
+                  placeholder="0.0"
+                  autocomplete="off"
+                />
+                <span aria-hidden="true">%</span>
+              </div>
+            </fieldset>
+
+            <fieldset class="question-field action-question" id="action-question" hidden>
+              <legend>3. What is the profitable play?</legend>
+              <div class="action-options">
+                <label>
+                  <input type="radio" name="action" value="call" />
+                  <span>Call</span>
+                </label>
+                <label>
+                  <input type="radio" name="action" value="fold" />
+                  <span>Fold</span>
+                </label>
+              </div>
+            </fieldset>
+
+            <button class="primary-button submit-button" type="submit">Check answer</button>
           </form>
-          <p id="answer-help" class="microcopy">Answers within <span id="tolerance-copy">1.0</span>% count as correct.</p>
+          <p id="answer-help" class="microcopy">
+            Percentage answers within 1 point count as correct.
+          </p>
         </div>
 
         <div id="feedback" class="feedback" aria-live="polite" hidden>
@@ -81,24 +153,30 @@
             </div>
           </div>
 
-          <div class="equation" aria-label="Calculation breakdown">
+          <div class="result-grid" id="result-grid">
             <div>
-              <span>Call</span>
-              <strong id="calc-call">$50</strong>
+              <span>Pot odds</span>
+              <strong id="result-pot-odds">25%</strong>
+              <small id="result-pot-status">Correct</small>
             </div>
-            <span class="equation__operator">÷</span>
-            <div>
-              <span>Final pot</span>
-              <strong id="calc-final-pot">$200</strong>
+            <div id="result-hand-card" hidden>
+              <span>Draw equity</span>
+              <strong id="result-hand-equity">35%</strong>
+              <small id="result-hand-status">Correct</small>
             </div>
-            <span class="equation__operator">=</span>
-            <div class="equation__answer">
-              <span>Required</span>
-              <strong id="calc-equity">25%</strong>
+            <div id="result-action-card" hidden>
+              <span>Decision</span>
+              <strong id="result-action">Call</strong>
+              <small id="result-action-status">Correct</small>
             </div>
           </div>
 
-          <p id="feedback-explanation" class="feedback__explanation"></p>
+          <div class="calculation-breakdown">
+            <p id="pot-calculation"></p>
+            <p id="equity-calculation" hidden></p>
+            <p id="decision-calculation" hidden></p>
+          </div>
+
           <button id="next-question" class="primary-button primary-button--wide" type="button">
             Next question <span aria-hidden="true">→</span>
           </button>
@@ -107,7 +185,7 @@
 
       <section class="scoreboard" aria-label="Practice statistics">
         <article>
-          <p>Accuracy</p>
+          <p>Round accuracy</p>
           <strong id="accuracy-stat">—</strong>
           <span id="accuracy-detail">No answers yet</span>
         </article>
@@ -125,21 +203,32 @@
 
       <section class="lesson" aria-labelledby="lesson-title">
         <div>
-          <p class="eyebrow">The one formula</p>
-          <h2 id="lesson-title">Call ÷ final pot</h2>
+          <p class="eyebrow">The math behind the move</p>
+          <h2 id="lesson-title">Price versus probability</h2>
         </div>
         <div class="lesson__content">
           <p>
-            Add the starting pot, your opponent's bet, and your call. Then divide
-            the amount you call by that final pot.
+            A call is profitable when your chance of winning is at least the
+            break-even equity demanded by the pot.
           </p>
-          <div class="formula">
-            <span>Required equity</span>
-            <strong>call ÷ (pot + bet + call)</strong>
+          <div class="formula-list">
+            <div class="formula">
+              <span>Required equity</span>
+              <strong>call ÷ (pot + bet + call)</strong>
+            </div>
+            <div class="formula">
+              <span>One card to come</span>
+              <strong>outs ÷ 46</strong>
+            </div>
+            <div class="formula">
+              <span>Two cards to come</span>
+              <strong>1 − miss turn × miss river</strong>
+            </div>
           </div>
           <p class="lesson__tip">
-            <strong>At the table:</strong> if the pot is $100 and the bet is $50,
-            you call $50 to play for a final pot of $200. That means you need 25%.
+            <strong>Decision rule:</strong> call when draw equity ≥ required
+            equity; otherwise fold. These drills treat the listed clean outs as
+            your winning paths so you can focus on the calculation.
           </p>
         </div>
       </section>
