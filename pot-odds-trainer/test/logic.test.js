@@ -28,8 +28,14 @@ test("grades tolerance against the one-decimal value shown to the player", () =>
 });
 
 test("includes exact decimal tolerance boundaries despite floating-point error", () => {
-  assert.equal(isAnswerCorrect(17.8, 17.5, 0.3), true);
-  assert.equal(isAnswerCorrect(17.8001, 17.5, 0.3), false);
+  assert.equal(isAnswerCorrect(17.7, 16.7, 1), true);
+  assert.equal(isAnswerCorrect(17.7001, 16.7, 1), false);
+});
+
+test("uses the same one-point tolerance at every difficulty", () => {
+  for (const difficulty of ["easy", "standard", "hard"]) {
+    assert.equal(createQuestion(difficulty, () => 0).tolerance, 1);
+  }
 });
 
 test("creates deterministic valid questions", () => {
