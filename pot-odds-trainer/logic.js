@@ -53,6 +53,59 @@
     return `${rank}${suit}`;
   }
 
+  function straightWindows() {
+    return [
+      ["A", "2", "3", "4", "5"],
+      ...Array.from({ length: 9 }, (_unused, index) => RANKS.slice(index, index + 5)),
+    ];
+  }
+
+  function analyzeStraightRanks(ranks) {
+    const windows = straightWindows();
+    const hasMadeStraight = windows.some((window) => window.every((rank) => ranks.has(rank)));
+    const outRanks = RANKS.filter(
+      (candidate) =>
+        !ranks.has(candidate) &&
+        windows.some((window) =>
+          window.includes(candidate) && window.every((rank) => rank === candidate || ranks.has(rank))
+        )
+    );
+    return { hasMadeStraight, outRanks };
+  }
+
+  function straightRanksForCards(cards) {
+    return new Set(cards.map((cardCode) => cardCode.slice(0, -1)));
+  }
+
+  function preservesStraightDraw(cards, candidate, expectedOutRanks) {
+    const { hasMadeStraight, outRanks } = analyzeStraightRanks(
+      straightRanksForCards([...cards, candidate])
+    );
+    return !hasMadeStraight &&
+      outRanks.length === expectedOutRanks.length &&
+      outRanks.every((rank) => expectedOutRanks.includes(rank));
+  }
+
+  function createSafeFlushRankGroups() {
+    const groups = [];
+    for (let first = 0; first < RANKS.length - 3; first += 1) {
+      for (let second = first + 1; second < RANKS.length - 2; second += 1) {
+        for (let third = second + 1; third < RANKS.length - 1; third += 1) {
+          for (let fourth = third + 1; fourth < RANKS.length; fourth += 1) {
+            const ranks = [RANKS[first], RANKS[second], RANKS[third], RANKS[fourth]];
+            const straightState = analyzeStraightRanks(new Set(ranks));
+            if (!straightState.hasMadeStraight && straightState.outRanks.length === 0) {
+              groups.push(ranks);
+            }
+          }
+        }
+      }
+    }
+    return groups;
+  }
+
+  const SAFE_FLUSH_RANK_GROUPS = createSafeFlushRankGroups();
+
   function takeRandomCard(usedCards, random, predicate = () => true) {
     const candidates = [];
     for (const rank of RANKS) {
@@ -73,14 +126,20 @@
 
   function createFlushDraw(street, random) {
     const suit = randomItem(SUITS, random);
-    const suitedRanks = shuffle(RANKS, random).slice(0, 4);
+    const suitedRanks = shuffle(randomItem(SAFE_FLUSH_RANK_GROUPS, random), random);
     const hero = suitedRanks.slice(0, 2).map((rank) => card(rank, suit));
     const board = suitedRanks.slice(2).map((rank) => card(rank, suit));
     const usedCards = new Set([...hero, ...board]);
     const fillerCount = street === "Flop" ? 1 : 2;
 
     for (let index = 0; index < fillerCount; index += 1) {
-      board.push(takeRandomCard(usedCards, random, (_rank, candidateSuit) => candidateSuit !== suit));
+      board.push(takeRandomCard(
+        usedCards,
+        random,
+        (rank, candidateSuit) =>
+          candidateSuit !== suit &&
+          preservesStraightDraw([...hero, ...board], card(rank, candidateSuit), [])
+      ));
     }
 
     const highRank = hero.reduce(
@@ -129,7 +188,12 @@
     const fillerCount = street === "Flop" ? 1 : 2;
 
     for (let index = 0; index < fillerCount; index += 1) {
-      board.push(takeRandomCard(usedCards, random, (rank) => !outRanks.includes(rank)));
+      board.push(takeRandomCard(
+        usedCards,
+        random,
+        (rank, suit) =>
+          preservesStraightDraw([...hero, ...board], card(rank, suit), outRanks)
+      ));
     }
 
     const outs = kind === "gutshot" ? 4 : 8;
@@ -168,7 +232,9 @@
       board.push(takeRandomCard(
         usedCards,
         random,
-        (rank, suit) => suit !== flushSuit && !outRanks.includes(rank)
+        (rank, suit) =>
+          suit !== flushSuit &&
+          preservesStraightDraw([...hero, ...board], card(rank, suit), outRanks)
       ));
     }
 
