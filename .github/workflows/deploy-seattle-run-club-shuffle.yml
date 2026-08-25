@@ -1,10 +1,11 @@
-name: Deploy Seattle Run Club Shuffle Site
+name: Deploy Vibes Sites
 
 on:
   push:
     branches: [main]
     paths:
       - 'milestones/**'
+      - 'pot-odds-trainer/**'
       - 'seattle-run-club-shuffle/**'
       - '.github/workflows/deploy-seattle-run-club-shuffle.yml'
   workflow_dispatch:
@@ -37,6 +38,8 @@ jobs:
           mkdir -p _pages
           mkdir -p _pages/milestones
           cp -R milestones/. _pages/milestones/
+          mkdir -p _pages/pot-odds-trainer
+          cp -R pot-odds-trainer/. _pages/pot-odds-trainer/
           mkdir -p _pages/seattle-run-club-shuffle
           cp -R seattle-run-club-shuffle/. _pages/seattle-run-club-shuffle/
 
