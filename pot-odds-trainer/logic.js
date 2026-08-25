@@ -50,7 +50,7 @@
       board: ["Jh", "Tc", "3s"],
       drawName: "Open-ended straight draw",
       outs: 8,
-      explanation: "Any king or nine completes your straight: eight clean outs with two cards to come.",
+      explanation: "Any ace or nine completes your straight: eight clean outs with two cards to come.",
     },
     "turn-gutshot": {
       street: "Turn",

@@ -70,6 +70,15 @@ test("creates an equity question and recommends the mathematically profitable ac
   assert.ok(question.handEquity > question.requiredEquity);
 });
 
+test("describes the actual outs in the open-ended straight scenario", () => {
+  const values = [0, 0, 0.4];
+  const question = createEquityQuestion("standard", () => values.shift());
+
+  assert.deepEqual(question.hero, ["Ks", "Qd"]);
+  assert.match(question.explanation, /ace or nine/);
+  assert.equal(question.outs, 8);
+});
+
 test("can generate fold decisions when draw equity is below the price", () => {
   const values = [0, 0.99, 0.99];
   const question = createEquityQuestion("standard", () => values.shift());
