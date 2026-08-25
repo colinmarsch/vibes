@@ -27,6 +27,11 @@ test("grades tolerance against the one-decimal value shown to the player", () =>
   assert.equal(isAnswerCorrect(17.8, displayedEquity, 1), false);
 });
 
+test("includes exact decimal tolerance boundaries despite floating-point error", () => {
+  assert.equal(isAnswerCorrect(17.8, 17.5, 0.3), true);
+  assert.equal(isAnswerCorrect(17.8001, 17.5, 0.3), false);
+});
+
 test("creates deterministic valid questions", () => {
   const question = createQuestion("easy", () => 0);
   assert.equal(question.pot, 40);

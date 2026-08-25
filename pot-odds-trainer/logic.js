@@ -37,7 +37,12 @@
   }
 
   function isAnswerCorrect(answer, equity, tolerance) {
-    return Number.isFinite(answer) && Math.abs(answer - equity) <= tolerance;
+    if (!Number.isFinite(answer)) return false;
+
+    const roundingAllowance =
+      Number.EPSILON * Math.max(Math.abs(answer), Math.abs(equity), 1) * 4;
+
+    return Math.abs(answer - equity) <= tolerance + roundingAllowance;
   }
 
   function roundEquityForDisplay(equity) {
