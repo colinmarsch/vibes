@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'milestones/**'
+      - 'poker-math-lab/**'
       - 'pot-odds-trainer/**'
       - 'seattle-run-club-shuffle/**'
       - '.github/workflows/deploy-seattle-run-club-shuffle.yml'
@@ -38,6 +39,8 @@ jobs:
           mkdir -p _pages
           mkdir -p _pages/milestones
           cp -R milestones/. _pages/milestones/
+          mkdir -p _pages/poker-math-lab
+          cp -R poker-math-lab/. _pages/poker-math-lab/
           mkdir -p _pages/pot-odds-trainer
           cp -R pot-odds-trainer/. _pages/pot-odds-trainer/
           mkdir -p _pages/seattle-run-club-shuffle
