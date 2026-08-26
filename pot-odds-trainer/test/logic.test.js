@@ -36,6 +36,15 @@ function straightState(cards) {
   return { made, outs };
 }
 
+function maximumSuitCount(cards) {
+  const counts = new Map();
+  for (const card of cards) {
+    const suit = card.slice(-1);
+    counts.set(suit, (counts.get(suit) || 0) + 1);
+  }
+  return Math.max(...counts.values());
+}
+
 test("calculates required equity from the final pot after calling", () => {
   assert.equal(calculateRequiredEquity(100, 50), 25);
   assert.equal(calculateRequiredEquity(60, 30), 25);
@@ -92,6 +101,7 @@ test("random equity questions contain unique valid cards and correct math", () =
       assert.equal(question.hero.length, 2);
       assert.equal(question.board.length, question.street === "Flop" ? 3 : 4);
       assert.equal(new Set(cards).size, cards.length);
+      assert.equal(new Set(cards.map((card) => card.slice(0, -1))).size, cards.length);
       assert.ok(cards.every((card) => /^[2-9TJQKA][hdcs]$/.test(card)));
       assert.ok([4, 8, 9, 15].includes(question.outs));
       assert.equal(question.cardsToCome, question.street === "Flop" ? 2 : 1);
@@ -107,8 +117,26 @@ test("random equity questions contain unique valid cards and correct math", () =
       } else {
         assert.equal(straight.outs.length, 0);
       }
+
+      if (question.drawName.toLowerCase().includes("flush")) {
+        assert.equal(maximumSuitCount(cards), 4);
+      } else {
+        assert.ok(maximumSuitCount(cards) <= 2);
+      }
     }
   }
+});
+
+test("review regression seeds preserve only the advertised draw", () => {
+  const straightQuestion = createEquityQuestion("standard", seededRandom(623));
+  const straightCards = [...straightQuestion.hero, ...straightQuestion.board];
+  assert.equal(straightQuestion.outs, 8);
+  assert.ok(maximumSuitCount(straightCards) <= 2);
+
+  const flushQuestion = createEquityQuestion("easy", seededRandom(49));
+  const flushCards = [...flushQuestion.hero, ...flushQuestion.board];
+  assert.equal(flushQuestion.outs, 9);
+  assert.equal(new Set(flushCards.map((card) => card.slice(0, -1))).size, flushCards.length);
 });
 
 test("equity hands are procedurally randomized instead of drawn from a preset list", () => {
