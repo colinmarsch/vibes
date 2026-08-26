@@ -24,9 +24,12 @@ the displayed values do not provide.
 
 ## Difficulty
 
-- **Easy:** round pot and bet sizes with one-card draw calculations
-- **Standard:** more bet sizes and a mix of one- and two-card draws
+- **Easy:** round pot and bet sizes with straightforward flush and open-ended draws
+- **Standard:** more bet sizes plus flush, open-ended, and gutshot draws
 - **Hard:** awkward bet sizes and overlapping combo-draw outs
+
+Every difficulty randomizes independently between a three-card flop (two cards
+to come) and a four-card turn (one card to come).
 
 All percentage answers use the same inclusive ±1 percentage-point tolerance.
 Difficulty comes from the arithmetic and draw complexity, not looser grading.
