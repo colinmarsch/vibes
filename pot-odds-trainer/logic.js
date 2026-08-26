@@ -86,6 +86,19 @@
       outRanks.every((rank) => expectedOutRanks.includes(rank));
   }
 
+  function hasVisibleRank(cards, rank) {
+    return cards.some((cardCode) => cardCode.slice(0, -1) === rank);
+  }
+
+  function preservesNoFlushDraw(cards, candidate) {
+    const suitCounts = {};
+    for (const cardCode of [...cards, candidate]) {
+      const suit = cardCode.slice(-1);
+      suitCounts[suit] = (suitCounts[suit] || 0) + 1;
+    }
+    return Math.max(...Object.values(suitCounts)) <= 2;
+  }
+
   function createSafeFlushRankGroups() {
     const groups = [];
     for (let first = 0; first < RANKS.length - 3; first += 1) {
@@ -138,6 +151,7 @@
         random,
         (rank, candidateSuit) =>
           candidateSuit !== suit &&
+          !hasVisibleRank([...hero, ...board], rank) &&
           preservesStraightDraw([...hero, ...board], card(rank, candidateSuit), [])
       ));
     }
@@ -183,8 +197,15 @@
     const { madeRanks, outRanks } = createStraightRanks(kind, random);
     const dealtRanks = shuffle(madeRanks, random);
     const usedCards = new Set();
-    const hero = dealtRanks.slice(0, 2).map((rank) => takeRandomCard(usedCards, random, (candidateRank) => candidateRank === rank));
-    const board = dealtRanks.slice(2).map((rank) => takeRandomCard(usedCards, random, (candidateRank) => candidateRank === rank));
+    const dealtCards = dealtRanks.map((rank) => takeRandomCard(
+      usedCards,
+      random,
+      (candidateRank, suit) =>
+        candidateRank === rank &&
+        preservesNoFlushDraw([...usedCards], card(candidateRank, suit))
+    ));
+    const hero = dealtCards.slice(0, 2);
+    const board = dealtCards.slice(2);
     const fillerCount = street === "Flop" ? 1 : 2;
 
     for (let index = 0; index < fillerCount; index += 1) {
@@ -192,6 +213,8 @@
         usedCards,
         random,
         (rank, suit) =>
+          !hasVisibleRank([...hero, ...board], rank) &&
+          preservesNoFlushDraw([...hero, ...board], card(rank, suit)) &&
           preservesStraightDraw([...hero, ...board], card(rank, suit), outRanks)
       ));
     }
@@ -234,6 +257,7 @@
         random,
         (rank, suit) =>
           suit !== flushSuit &&
+          !hasVisibleRank([...hero, ...board], rank) &&
           preservesStraightDraw([...hero, ...board], card(rank, suit), outRanks)
       ));
     }
