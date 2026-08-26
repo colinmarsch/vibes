@@ -14,8 +14,9 @@ Randomized betting spots ask for the break-even equity required to call.
 Card-and-board scenarios ask the player to calculate:
 
 1. The pot odds, expressed as required equity
-2. The exact chance of hitting the listed clean draw
-3. Whether comparing those percentages makes a call or fold profitable
+2. The number of clean outs, without revealing the draw type first
+3. The exact chance of hitting the draw
+4. Whether comparing those percentages makes a call or fold profitable
 
 The integrated drill deliberately grades only **call** or **fold**. Choosing
 whether to raise also requires assumptions about ranges and fold equity that

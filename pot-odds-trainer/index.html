@@ -77,10 +77,6 @@
               <p>Board</p>
               <div id="board-cards" class="cards" aria-label="Community cards"></div>
             </div>
-            <div class="draw-badge">
-              <span id="draw-outs">9 outs</span>
-              <strong id="draw-name">Flush draw</strong>
-            </div>
           </div>
 
           <form id="answer-form" class="answer-form" novalidate>
@@ -104,8 +100,27 @@
               </div>
             </fieldset>
 
+            <fieldset class="question-field outs-question" id="outs-question" hidden>
+              <legend>2. How many clean outs?</legend>
+              <label for="outs-answer" class="sr-only">Number of clean outs</label>
+              <div class="answer-control">
+                <input
+                  id="outs-answer"
+                  name="outs-answer"
+                  type="number"
+                  inputmode="numeric"
+                  min="0"
+                  max="46"
+                  step="1"
+                  placeholder="0"
+                  autocomplete="off"
+                />
+                <span aria-hidden="true">outs</span>
+              </div>
+            </fieldset>
+
             <fieldset class="question-field equity-question" id="equity-question" hidden>
-              <legend>2. What is your chance to hit?</legend>
+              <legend>3. What is your chance to hit?</legend>
               <label for="hand-equity-answer" class="sr-only">Hand equity percentage</label>
               <div class="answer-control">
                 <input
@@ -124,7 +139,7 @@
             </fieldset>
 
             <fieldset class="question-field action-question" id="action-question" hidden>
-              <legend>3. What is the profitable play?</legend>
+              <legend>4. What is the profitable play?</legend>
               <div class="action-options">
                 <label>
                   <input type="radio" name="action" value="call" />
@@ -140,7 +155,7 @@
             <button class="primary-button submit-button" type="submit">Check answer</button>
           </form>
           <p id="answer-help" class="microcopy">
-            Percentage answers within 1 point count as correct.
+            Percentage answers within 1 point count as correct; outs must be exact.
           </p>
         </div>
 
@@ -158,6 +173,11 @@
               <span>Pot odds</span>
               <strong id="result-pot-odds">25%</strong>
               <small id="result-pot-status">Correct</small>
+            </div>
+            <div id="result-outs-card" hidden>
+              <span id="result-draw-name">Clean outs</span>
+              <strong id="result-outs">9</strong>
+              <small id="result-outs-status">Correct</small>
             </div>
             <div id="result-hand-card" hidden>
               <span>Draw equity</span>

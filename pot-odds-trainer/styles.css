@@ -264,7 +264,7 @@ a:focus-visible {
 
 .hand-context {
   display: grid;
-  grid-template-columns: auto 1fr auto;
+  grid-template-columns: auto 1fr;
   align-items: end;
   gap: clamp(22px, 4vw, 48px);
   margin-top: 30px;
@@ -305,19 +305,9 @@ a:focus-visible {
 .playing-card span { justify-self: end; font-size: 1.25rem; }
 .playing-card--red { color: #c44840; }
 
-.draw-badge {
-  display: grid;
-  justify-items: end;
-  gap: 5px;
-  text-align: right;
-}
-
-.draw-badge span { color: var(--gold); font-family: "DM Mono", monospace; font-size: 1.05rem; }
-.draw-badge strong { max-width: 180px; font-size: 0.82rem; font-weight: 600; }
-
 .answer-form {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) auto;
   align-items: end;
   gap: 18px;
   margin-top: 32px;
@@ -361,6 +351,7 @@ a:focus-visible {
 
 .answer-control input:focus { border-color: var(--green-strong); }
 .answer-control input:disabled { opacity: 0.5; }
+.outs-question .answer-control input { padding-right: 64px; }
 .answer-control span {
   position: absolute;
   top: 17px;
@@ -464,7 +455,7 @@ a:focus-visible {
 
 .result-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 10px;
   margin-top: 26px;
 }
