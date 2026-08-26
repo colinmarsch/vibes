@@ -127,6 +127,21 @@ test("random equity questions contain unique valid cards and correct math", () =
   }
 });
 
+test("randomizes between three-card flops and four-card turns at every difficulty", () => {
+  for (const difficulty of ["easy", "standard", "hard"]) {
+    const random = seededRandom(20260826);
+    const boardSizes = new Set();
+
+    for (let index = 0; index < 100; index += 1) {
+      const question = createEquityQuestion(difficulty, random);
+      boardSizes.add(question.board.length);
+      assert.equal(question.street, question.board.length === 3 ? "Flop" : "Turn");
+    }
+
+    assert.deepEqual(boardSizes, new Set([3, 4]));
+  }
+});
+
 test("review regression seeds preserve only the advertised draw", () => {
   const straightQuestion = createEquityQuestion("standard", seededRandom(623));
   const straightCards = [...straightQuestion.hero, ...straightQuestion.board];
