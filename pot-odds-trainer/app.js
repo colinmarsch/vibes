@@ -186,8 +186,9 @@ function readPercentage(input, message) {
 }
 
 function readOuts() {
-  const answer = Number(elements.outsAnswer.value);
-  if (!Number.isInteger(answer) || answer < 0 || answer > 46) {
+  const value = elements.outsAnswer.value.trim();
+  const answer = Number(value);
+  if (value === "" || !Number.isInteger(answer) || answer < 0 || answer > 46) {
     elements.outsAnswer.setCustomValidity("Enter a whole number of outs between 0 and 46.");
     elements.outsAnswer.reportValidity();
     return null;
