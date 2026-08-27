@@ -129,6 +129,36 @@ function setInputsDisabled(disabled) {
   });
 }
 
+function focusInput(input) {
+  input.focus({ preventScroll: true });
+  input.scrollIntoView({ behavior: "smooth", block: "center" });
+}
+
+function handleNumericInputEnter(event) {
+  if (event.key !== "Enter" || state.answered) return;
+
+  const isEquityMode = state.mode === "equity";
+  let nextInput = null;
+
+  if (isEquityMode && event.currentTarget === elements.potOddsAnswer) {
+    nextInput = elements.outsAnswer;
+  } else if (event.currentTarget === elements.outsAnswer) {
+    nextInput = elements.handEquityAnswer;
+  }
+
+  if (nextInput) {
+    event.preventDefault();
+    focusInput(nextInput);
+    return;
+  }
+
+  if (isEquityMode && event.currentTarget === elements.handEquityAnswer) {
+    event.preventDefault();
+    elements.actionInputs[0].focus({ preventScroll: true });
+    elements.actionQuestion.scrollIntoView({ behavior: "smooth", block: "center" });
+  }
+}
+
 function startQuestion() {
   const isEquityMode = state.mode === "equity";
   state.question = isEquityMode
@@ -154,6 +184,7 @@ function startQuestion() {
   elements.potQuestionLegend.textContent = isEquityMode
     ? "1. What equity do you need to call?"
     : "What equity do you need to call?";
+  elements.potOddsAnswer.enterKeyHint = isEquityMode ? "next" : "done";
 
   if (isEquityMode) {
     elements.streetPill.textContent = state.question.street;
@@ -337,6 +368,8 @@ elements.next.addEventListener("click", startQuestion);
   input.addEventListener("input", () => {
     input.setCustomValidity("");
   });
+  input.addEventListener("keydown", handleNumericInputEnter);
+  input.addEventListener("focus", () => input.select());
 });
 
 elements.actionInputs.forEach((input) => {
