@@ -14,6 +14,7 @@ const elements = {
   potQuestionLegend: document.querySelector("#pot-question-legend"),
   outsAnswer: document.querySelector("#outs-answer"),
   handEquityAnswer: document.querySelector("#hand-equity-answer"),
+  handEquityLegend: document.querySelector("#hand-equity-legend"),
   actionInputs: [...document.querySelectorAll('input[name="action"]')],
   equityQuestion: document.querySelector("#equity-question"),
   outsQuestion: document.querySelector("#outs-question"),
@@ -25,7 +26,10 @@ const elements = {
   streetPill: document.querySelector("#street-pill"),
   handContext: document.querySelector("#hand-context"),
   heroCards: document.querySelector("#hero-cards"),
+  boardGroup: document.querySelector("#board-group"),
   boardCards: document.querySelector("#board-cards"),
+  villainGroup: document.querySelector("#villain-group"),
+  villainCards: document.querySelector("#villain-cards"),
   feedback: document.querySelector("#feedback"),
   feedbackIcon: document.querySelector("#feedback-icon"),
   feedbackKicker: document.querySelector("#feedback-kicker"),
@@ -35,6 +39,7 @@ const elements = {
   resultPotStatus: document.querySelector("#result-pot-status"),
   resultHandCard: document.querySelector("#result-hand-card"),
   resultHandEquity: document.querySelector("#result-hand-equity"),
+  resultHandLabel: document.querySelector("#result-hand-label"),
   resultHandStatus: document.querySelector("#result-hand-status"),
   resultOutsCard: document.querySelector("#result-outs-card"),
   resultDrawName: document.querySelector("#result-draw-name"),
@@ -46,6 +51,7 @@ const elements = {
   potCalculation: document.querySelector("#pot-calculation"),
   equityCalculation: document.querySelector("#equity-calculation"),
   decisionCalculation: document.querySelector("#decision-calculation"),
+  answerHelp: document.querySelector("#answer-help"),
   next: document.querySelector("#next-question"),
   accuracy: document.querySelector("#accuracy-stat"),
   accuracyDetail: document.querySelector("#accuracy-detail"),
@@ -138,10 +144,11 @@ function handleNumericInputEnter(event) {
   if (event.key !== "Enter" || state.answered) return;
 
   const isEquityMode = state.mode === "equity";
+  const isPreflop = isEquityMode && state.question.street === "Preflop";
   let nextInput = null;
 
   if (isEquityMode && event.currentTarget === elements.potOddsAnswer) {
-    nextInput = elements.outsAnswer;
+    nextInput = isPreflop ? elements.handEquityAnswer : elements.outsAnswer;
   } else if (event.currentTarget === elements.outsAnswer) {
     nextInput = elements.handEquityAnswer;
   }
@@ -165,6 +172,7 @@ function startQuestion() {
     ? createEquityQuestion(state.difficulty)
     : createQuestion(state.difficulty);
   state.answered = false;
+  const isPreflop = isEquityMode && state.question.street === "Preflop";
 
   elements.pot.textContent = formatMoney(state.question.pot);
   elements.bet.textContent = formatMoney(state.question.bet);
@@ -172,24 +180,39 @@ function startQuestion() {
   elements.handContext.hidden = !isEquityMode;
   elements.streetPill.hidden = !isEquityMode;
   elements.equityQuestion.hidden = !isEquityMode;
-  elements.outsQuestion.hidden = !isEquityMode;
+  elements.outsQuestion.hidden = !isEquityMode || isPreflop;
   elements.actionQuestion.hidden = !isEquityMode;
   elements.resultHandCard.hidden = !isEquityMode;
-  elements.resultOutsCard.hidden = !isEquityMode;
+  elements.resultOutsCard.hidden = !isEquityMode || isPreflop;
   elements.resultActionCard.hidden = !isEquityMode;
   elements.equityCalculation.hidden = !isEquityMode;
   elements.decisionCalculation.hidden = !isEquityMode;
   elements.resultGrid.classList.toggle("result-grid--single", !isEquityMode);
+  elements.resultGrid.classList.toggle("result-grid--preflop", isPreflop);
   elements.form.classList.toggle("answer-form--single", !isEquityMode);
+  elements.form.classList.toggle("answer-form--preflop", isPreflop);
   elements.potQuestionLegend.textContent = isEquityMode
     ? "1. What equity do you need to call?"
     : "What equity do you need to call?";
   elements.potOddsAnswer.enterKeyHint = isEquityMode ? "next" : "done";
+  elements.handEquityLegend.textContent = isPreflop
+    ? "2. What is your preflop hand equity?"
+    : "3. What is your chance to hit?";
+  elements.actionQuestion.querySelector("legend").textContent = isPreflop
+    ? "3. What is the profitable play?"
+    : "4. What is the profitable play?";
+  elements.resultHandLabel.textContent = isPreflop ? "Preflop equity" : "Draw equity";
+  elements.answerHelp.textContent = isPreflop
+    ? "Percentage answers within 1 point count as correct."
+    : "Percentage answers within 1 point count as correct; outs must be exact.";
 
   if (isEquityMode) {
     elements.streetPill.textContent = state.question.street;
     renderCards(elements.heroCards, state.question.hero);
     renderCards(elements.boardCards, state.question.board);
+    elements.boardGroup.hidden = isPreflop;
+    elements.villainGroup.hidden = !isPreflop;
+    renderCards(elements.villainCards, state.question.villain || []);
   }
 
   elements.potOddsAnswer.value = "";
@@ -199,7 +222,9 @@ function startQuestion() {
     input.checked = false;
   });
   setInputsDisabled(false);
-  elements.submitButton.textContent = isEquityMode ? "Check all four" : "Check answer";
+  elements.submitButton.textContent = isEquityMode
+    ? `Check all ${isPreflop ? "three" : "four"}`
+    : "Check answer";
   elements.feedback.hidden = true;
   elements.potOddsAnswer.focus();
 }
@@ -263,17 +288,20 @@ function submitAnswer() {
   if (potAnswer === null) return;
 
   const isEquityMode = state.mode === "equity";
+  const isPreflop = isEquityMode && state.question.street === "Preflop";
   let handAnswer = null;
   let outsAnswer = null;
   let selectedAction = null;
 
   if (isEquityMode) {
-    outsAnswer = readOuts();
-    if (outsAnswer === null) return;
+    if (!isPreflop) {
+      outsAnswer = readOuts();
+      if (outsAnswer === null) return;
+    }
 
     handAnswer = readPercentage(
       elements.handEquityAnswer,
-      "Enter a draw equity percentage between 0 and 100."
+      `Enter a ${isPreflop ? "hand" : "draw"} equity percentage between 0 and 100.`
     );
     if (handAnswer === null) return;
 
@@ -300,7 +328,7 @@ function submitAnswer() {
   let displayedHandEquity = null;
 
   if (isEquityMode) {
-    outsCorrect = outsAnswer === state.question.outs;
+    outsCorrect = isPreflop || outsAnswer === state.question.outs;
     displayedHandEquity = roundEquityForDisplay(state.question.handEquity);
     handCorrect = isAnswerCorrect(
       handAnswer,
@@ -339,18 +367,22 @@ function submitAnswer() {
     const comparison = state.question.handEquity >= requiredEquity ? "higher than" : "lower than";
 
     elements.resultHandEquity.textContent = `${roundedHandEquity}%`;
-    elements.resultDrawName.textContent = state.question.drawName;
-    elements.resultOuts.textContent = `${state.question.outs} outs`;
+    if (!isPreflop) {
+      elements.resultDrawName.textContent = state.question.drawName;
+      elements.resultOuts.textContent = `${state.question.outs} outs`;
+      setResultStatus(elements.resultOutsStatus, outsCorrect);
+    }
     elements.resultAction.textContent = actionLabel;
     setResultStatus(elements.resultHandStatus, handCorrect);
-    setResultStatus(elements.resultOutsStatus, outsCorrect);
     setResultStatus(elements.resultActionStatus, actionCorrect);
 
-    elements.equityCalculation.textContent = state.question.cardsToCome === 1
-      ? `Draw equity: ${state.question.outs} outs ÷ 46 unseen cards = ${roundedHandEquity}%. ${state.question.explanation}`
-      : `Draw equity: 1 − ((47 − ${state.question.outs}) ÷ 47 × (46 − ${state.question.outs}) ÷ 46) = ${roundedHandEquity}%. ${state.question.explanation}`;
+    elements.equityCalculation.textContent = isPreflop
+      ? `Preflop equity: ${roundedHandEquity}%. ${state.question.explanation}`
+      : state.question.cardsToCome === 1
+        ? `Draw equity: ${state.question.outs} outs ÷ 46 unseen cards = ${roundedHandEquity}%. ${state.question.explanation}`
+        : `Draw equity: 1 − ((47 − ${state.question.outs}) ÷ 47 × (46 − ${state.question.outs}) ÷ 46) = ${roundedHandEquity}%. ${state.question.explanation}`;
     elements.decisionCalculation.textContent =
-      `Decision: ${roundedHandEquity}% draw equity is ${comparison} ${roundedPotOdds}% required equity, so ${actionLabel.toLowerCase()}.`;
+      `Decision: ${roundedHandEquity}% ${isPreflop ? "hand" : "draw"} equity is ${comparison} ${roundedPotOdds}% required equity, so ${actionLabel.toLowerCase()}.`;
   }
 
   elements.feedback.hidden = false;

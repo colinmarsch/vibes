@@ -76,9 +76,13 @@
               <p>Your hand</p>
               <div id="hero-cards" class="cards" aria-label="Your hole cards"></div>
             </div>
-            <div class="card-group">
+            <div class="card-group" id="board-group">
               <p>Board</p>
               <div id="board-cards" class="cards" aria-label="Community cards"></div>
+            </div>
+            <div class="card-group" id="villain-group" hidden>
+              <p>Villain's hand</p>
+              <div id="villain-cards" class="cards" aria-label="Villain's hole cards"></div>
             </div>
           </div>
 
@@ -127,7 +131,7 @@
             </fieldset>
 
             <fieldset class="question-field equity-question" id="equity-question" hidden>
-              <legend>3. What is your chance to hit?</legend>
+              <legend id="hand-equity-legend">3. What is your chance to hit?</legend>
               <label for="hand-equity-answer" class="sr-only">Hand equity percentage</label>
               <div class="answer-control">
                 <input
@@ -148,7 +152,7 @@
             </fieldset>
 
             <fieldset class="question-field action-question" id="action-question" hidden>
-              <legend>4. What is the profitable play?</legend>
+              <legend id="action-legend">4. What is the profitable play?</legend>
               <div class="action-options">
                 <label>
                   <input type="radio" name="action" value="call" />
@@ -189,7 +193,7 @@
               <small id="result-outs-status">Correct</small>
             </div>
             <div id="result-hand-card" hidden>
-              <span>Draw equity</span>
+              <span id="result-hand-label">Draw equity</span>
               <strong id="result-hand-equity">35%</strong>
               <small id="result-hand-status">Correct</small>
             </div>

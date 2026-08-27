@@ -90,44 +90,54 @@ test("calculates exact draw equity with one or two cards to come", () => {
   assert.equal(Number.isNaN(calculateDrawEquity(9, 3)), true);
 });
 
-test("random equity questions contain unique valid cards and correct math", () => {
+test("random equity questions contain valid cards and correct street-specific math", () => {
   const random = seededRandom(20260825);
 
   for (const difficulty of ["easy", "standard", "hard"]) {
     for (let index = 0; index < 500; index += 1) {
       const question = createEquityQuestion(difficulty, random);
-      const cards = [...question.hero, ...question.board];
+      const cards = [...question.hero, ...(question.villain || []), ...question.board];
 
       assert.equal(question.hero.length, 2);
-      assert.equal(question.board.length, question.street === "Flop" ? 3 : 4);
       assert.equal(new Set(cards).size, cards.length);
-      assert.equal(new Set(cards.map((card) => card.slice(0, -1))).size, cards.length);
       assert.ok(cards.every((card) => /^[2-9TJQKA][hdcs]$/.test(card)));
-      assert.ok([4, 8, 9, 15].includes(question.outs));
-      assert.equal(question.cardsToCome, question.street === "Flop" ? 2 : 1);
-      assert.equal(question.handEquity, calculateDrawEquity(question.outs, question.cardsToCome));
       assert.equal(question.action, question.handEquity >= question.requiredEquity ? "call" : "fold");
 
-      const straight = straightState(cards);
-      assert.equal(straight.made, false);
-      if (question.drawName.includes("Open-ended") || question.drawName.includes("combo")) {
-        assert.equal(straight.outs.length, 2);
-      } else if (question.drawName.includes("Gutshot")) {
-        assert.equal(straight.outs.length, 1);
+      if (question.street === "Preflop") {
+        assert.equal(question.board.length, 0);
+        assert.equal(question.villain.length, 2);
+        assert.equal(question.outs, null);
+        assert.equal(question.cardsToCome, 5);
+        assert.ok(question.handEquity > 0 && question.handEquity < 100);
       } else {
-        assert.equal(straight.outs.length, 0);
-      }
+        assert.equal(question.villain, undefined);
+        assert.equal(question.board.length, question.street === "Flop" ? 3 : 4);
+        assert.equal(new Set(cards.map((card) => card.slice(0, -1))).size, cards.length);
+        assert.ok([4, 8, 9, 15].includes(question.outs));
+        assert.equal(question.cardsToCome, question.street === "Flop" ? 2 : 1);
+        assert.equal(question.handEquity, calculateDrawEquity(question.outs, question.cardsToCome));
 
-      if (question.drawName.toLowerCase().includes("flush")) {
-        assert.equal(maximumSuitCount(cards), 4);
-      } else {
-        assert.ok(maximumSuitCount(cards) <= 2);
+        const straight = straightState(cards);
+        assert.equal(straight.made, false);
+        if (question.drawName.includes("Open-ended") || question.drawName.includes("combo")) {
+          assert.equal(straight.outs.length, 2);
+        } else if (question.drawName.includes("Gutshot")) {
+          assert.equal(straight.outs.length, 1);
+        } else {
+          assert.equal(straight.outs.length, 0);
+        }
+
+        if (question.drawName.toLowerCase().includes("flush")) {
+          assert.equal(maximumSuitCount(cards), 4);
+        } else {
+          assert.ok(maximumSuitCount(cards) <= 2);
+        }
       }
     }
   }
 });
 
-test("randomizes between three-card flops and four-card turns at every difficulty", () => {
+test("randomizes between preflop, three-card flops, and four-card turns at every difficulty", () => {
   for (const difficulty of ["easy", "standard", "hard"]) {
     const random = seededRandom(20260826);
     const boardSizes = new Set();
@@ -135,20 +145,20 @@ test("randomizes between three-card flops and four-card turns at every difficult
     for (let index = 0; index < 100; index += 1) {
       const question = createEquityQuestion(difficulty, random);
       boardSizes.add(question.board.length);
-      assert.equal(question.street, question.board.length === 3 ? "Flop" : "Turn");
+      assert.equal(question.street, { 0: "Preflop", 3: "Flop", 4: "Turn" }[question.board.length]);
     }
 
-    assert.deepEqual(boardSizes, new Set([3, 4]));
+    assert.deepEqual(boardSizes, new Set([0, 3, 4]));
   }
 });
 
 test("review regression seeds preserve only the advertised draw", () => {
-  const straightQuestion = createEquityQuestion("standard", seededRandom(623));
+  const straightQuestion = createEquityQuestion("standard", seededRandom(19));
   const straightCards = [...straightQuestion.hero, ...straightQuestion.board];
   assert.equal(straightQuestion.outs, 8);
   assert.ok(maximumSuitCount(straightCards) <= 2);
 
-  const flushQuestion = createEquityQuestion("easy", seededRandom(49));
+  const flushQuestion = createEquityQuestion("easy", seededRandom(9));
   const flushCards = [...flushQuestion.hero, ...flushQuestion.board];
   assert.equal(flushQuestion.outs, 9);
   assert.equal(new Set(flushCards.map((card) => card.slice(0, -1))).size, flushCards.length);
@@ -158,12 +168,13 @@ test("equity hands are procedurally randomized instead of drawn from a preset li
   const random = seededRandom(42);
   const signatures = new Set();
 
-  for (let index = 0; index < 250; index += 1) {
+  while (signatures.size < 250) {
     const question = createEquityQuestion("standard", random);
+    if (question.street === "Preflop") continue;
     signatures.add([...question.hero, ...question.board].join("-"));
   }
 
-  assert.ok(signatures.size > 240);
+  assert.equal(signatures.size, 250);
 });
 
 test("an injected random source makes generated equity questions reproducible", () => {
