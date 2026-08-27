@@ -62,7 +62,8 @@ call when draw equity >= required equity; otherwise fold
 - Immediate, per-answer calculation feedback
 - Round accuracy, current streak, and best streak tracking
 - Device-local stats using `localStorage`
-- Keyboard-friendly, accessible card labels, and responsive layouts
+- Mobile keyboard field navigation, large touch targets, and responsive layouts
+- Keyboard-friendly controls and accessible card labels
 - No account, backend, dependencies, or paywall
 
 ## Run locally
