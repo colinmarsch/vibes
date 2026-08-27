@@ -26,6 +26,8 @@ html {
 body {
   min-height: 100vh;
   margin: 0;
+  padding-inline-start: env(safe-area-inset-left);
+  padding-inline-end: env(safe-area-inset-right);
   overflow-x: hidden;
   background:
     linear-gradient(rgba(255, 255, 255, 0.018) 1px, transparent 1px),
