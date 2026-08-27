@@ -3,7 +3,36 @@
   const RANKS = ["2", "3", "4", "5", "6", "7", "8", "9", "T", "J", "Q", "K", "A"];
   const SUITS = ["h", "d", "c", "s"];
   const SUIT_NAMES = { h: "hearts", d: "diamonds", c: "clubs", s: "spades" };
-  const STREETS = ["Flop", "Turn"];
+  const STREETS = ["Preflop", "Flop", "Turn"];
+
+  // Exact heads-up equities for representative all-in matchups. Suits are
+  // permuted together when a question is created, which preserves the equity.
+  const PREFLOP_MATCHUPS = {
+    easy: [
+      { hero: ["Ac", "Ad"], villain: ["Kc", "Kd"], handEquity: 82.6366112559452,
+        matchupName: "Higher pair vs lower pair" },
+      { hero: ["As", "Ks"], villain: ["Ah", "Qd"], handEquity: 75.55962609443183,
+        matchupName: "Dominating ace" },
+      { hero: ["7s", "7h"], villain: ["Ac", "Kc"], handEquity: 52.12088507688385,
+        matchupName: "Pair vs two overcards" },
+    ],
+    standard: [
+      { hero: ["As", "Ks"], villain: ["Qh", "Qd"], handEquity: 46.21445724590961,
+        matchupName: "Suited overcards vs pair" },
+      { hero: ["As", "Kh"], villain: ["Qc", "Qd"], handEquity: 42.8351507676207,
+        matchupName: "Offsuit overcards vs pair" },
+      { hero: ["9s", "8s"], villain: ["Ah", "Ad"], handEquity: 22.62305642008758,
+        matchupName: "Suited connectors vs overpair" },
+    ],
+    hard: [
+      { hero: ["Ah", "Kh"], villain: ["Ac", "Kd"], handEquity: 52.4921392465826,
+        matchupName: "Suited vs offsuit same ranks" },
+      { hero: ["Js", "Ts"], villain: ["Ah", "Kd"], handEquity: 41.17986641506625,
+        matchupName: "Suited connected undercards vs big ace" },
+      { hero: ["As", "Kh"], villain: ["Ac", "Qd"], handEquity: 74.01612088336453,
+        matchupName: "Dominating ace with shared suits" },
+    ],
+  };
 
   const DIFFICULTIES = {
     easy: {
@@ -279,6 +308,28 @@
     return createStraightDraw(drawType.kind, drawType.street, random);
   }
 
+  function createPreflopScenario(difficulty, random) {
+    const matchups = PREFLOP_MATCHUPS[difficulty] || PREFLOP_MATCHUPS.standard;
+    const matchup = randomItem(matchups, random);
+    const shuffledSuits = shuffle(SUITS, random);
+    const suitMap = Object.fromEntries(SUITS.map((suit, index) => [suit, shuffledSuits[index]]));
+    const remapSuits = (cards) => cards.map((cardCode) =>
+      card(cardCode.slice(0, -1), suitMap[cardCode.slice(-1)])
+    );
+
+    return {
+      street: "Preflop",
+      hero: remapSuits(matchup.hero),
+      villain: remapSuits(matchup.villain),
+      board: [],
+      outs: null,
+      cardsToCome: 5,
+      handEquity: matchup.handEquity,
+      drawName: matchup.matchupName,
+      explanation: `${matchup.matchupName}: memorize this representative heads-up preflop equity.`,
+    };
+  }
+
   function calculateRequiredEquity(pot, bet) {
     return (bet / (pot + bet + bet)) * 100;
   }
@@ -314,12 +365,13 @@
   function createEquityQuestion(difficulty = "standard", random = Math.random) {
     const config = DIFFICULTIES[difficulty] || DIFFICULTIES.standard;
     const { pot, bet } = createBet(difficulty, random);
-    const drawType = randomItem(config.drawTypes, random);
     const street = randomItem(STREETS, random);
-    const scenario = createEquityScenario({ ...drawType, street }, random);
-    const cardsToCome = scenario.street === "Flop" ? 2 : 1;
+    const scenario = street === "Preflop"
+      ? createPreflopScenario(difficulty, random)
+      : createEquityScenario({ ...randomItem(config.drawTypes, random), street }, random);
+    const cardsToCome = scenario.cardsToCome ?? (scenario.street === "Flop" ? 2 : 1);
     const requiredEquity = calculateRequiredEquity(pot, bet);
-    const handEquity = calculateDrawEquity(scenario.outs, cardsToCome);
+    const handEquity = scenario.handEquity ?? calculateDrawEquity(scenario.outs, cardsToCome);
 
     return {
       ...scenario,
@@ -365,6 +417,7 @@
   const api = {
     ANSWER_TOLERANCE,
     DIFFICULTIES,
+    PREFLOP_MATCHUPS,
     RANKS,
     SUITS,
     calculateRequiredEquity,

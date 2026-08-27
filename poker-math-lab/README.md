@@ -14,9 +14,12 @@ Randomized betting spots ask for the break-even equity required to call.
 Card-and-board scenarios ask the player to calculate:
 
 1. The pot odds, expressed as required equity
-2. The number of clean outs, without revealing the draw type first
-3. The exact chance of hitting the draw
+2. On the flop or turn, the number of clean outs without revealing the draw type first
+3. The hand equity: an exact draw calculation postflop or a preflop matchup to memorize
 4. Whether comparing those percentages makes a call or fold profitable
+
+Preflop rounds show both players' hole cards and omit outs, since outs are not
+the useful model before any community cards have been dealt.
 
 The integrated drill deliberately grades only **call** or **fold**. Choosing
 whether to raise also requires assumptions about ranges and fold equity that
@@ -28,8 +31,8 @@ the displayed values do not provide.
 - **Standard:** more bet sizes plus flush, open-ended, and gutshot draws
 - **Hard:** awkward bet sizes and overlapping combo-draw outs
 
-Every difficulty randomizes independently between a three-card flop (two cards
-to come) and a four-card turn (one card to come).
+Every difficulty randomizes independently between preflop, a three-card flop
+(two cards to come), and a four-card turn (one card to come).
 
 All percentage answers use the same inclusive ±1 percentage-point tolerance.
 Difficulty comes from the arithmetic and draw complexity, not looser grading.
