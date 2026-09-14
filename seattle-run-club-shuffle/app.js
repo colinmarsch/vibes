@@ -127,12 +127,13 @@ const clubs = [
     name: "Seattle Running Club",
     neighborhood: "Central Seattle",
     focus: "Training & Performance",
-    days: ["Tuesday", "Saturday"],
+    days: ["Wednesday", "Thursday", "Sunday"],
     schedule: [
-      "Tuesday evening workout / social run",
-      "Saturday group run"
+      "Wednesday · 6:30 PM workout (rotating locations; check club calendar)",
+      "Thursday · 6:00 PM social run (east side of Garfield Community Center)",
+      "Sunday · 8:00 AM group trail run (rotating trailheads; check club calendar)"
     ],
-    source: "https://www.meetup.com/seattlerunningclub/",
+    source: "https://www.seattlerunningclub.org/group-runs/",
     location: {
       label: "Seattle area (rotating meetup locations)",
       lat: 47.6062,
@@ -166,6 +167,19 @@ const clubs = [
       label: "Brooks Trailhead Store (Fremont)",
       lat: 47.6498,
       lng: -122.3491
+    }
+  },
+  {
+    name: "Brooks Outlet Run Club",
+    neighborhood: "Bothell",
+    focus: "Social & Community",
+    days: ["Wednesday"],
+    schedule: ["Wednesday · 6:00 PM · 3–3.5 mile loop from Brooks Outlet"],
+    source: "https://www.strava.com/clubs/610644",
+    location: {
+      label: "Brooks Outlet (24110 Bothell Everett Hwy, Suite F-300, Bothell)",
+      lat: 47.778276,
+      lng: -122.220069
     }
   },
   {
